@@ -9,8 +9,8 @@ L'Enfant des Rues connait l'identité du Parrain.
 **Gagne à la Victoire d'un Voleur**
 
 @effets
-Bonus 1.5% Vitesse par pierre possédée.
-Bonus 1% Force par pierre possédée.
-Malus 5% Faiblesse en dessous de 3 pierres possédées.
+Bonus 1.5% Vitesse par pierre possédée au dessus de 5 pierres.
+Bonus 1% Force par pierre possédée au dessus de 3 pierres.
+Malus 10% Faiblesse en dessous de 3 pierres possédées.
 
 @commandes
