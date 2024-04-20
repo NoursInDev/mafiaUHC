@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"2382778f6d631b69","x":-980,"y":-260,"width":740,"height":1099,"color":"4","type":"file","file":"Obsidian Wiki/Roles/Mafia/Le Parrain.md"},
+		{"id":"4828b846a3cd0858","x":-980,"y":880,"width":740,"height":500,"color":"4","type":"file","file":"Obsidian Wiki/Roles/Mafia/Le Fidèle.md"},
+		{"id":"cc0ef9bf3317bd13","x":-120,"y":-720,"width":740,"height":733,"type":"file","file":"Obsidian Wiki/Roles/{abstract} Role.md"},
+		{"id":"e40df91e28d33194","x":-1440,"y":1040,"width":400,"height":180,"color":"6","type":"file","file":"Obsidian Wiki/Roles/Solitaires & Ambigus/Le Nettoyeur.md"},
+		{"id":"4068ea1789961b1d","x":-120,"y":1130,"width":740,"height":640,"color":"6","type":"file","file":"Obsidian Wiki/Roles/Solitaires & Ambigus/L'Agent.md"},
+		{"id":"57a91d072c1e88a0","x":320,"y":439,"width":640,"height":601,"color":"6","type":"file","file":"Obsidian Wiki/Roles/Solitaires & Ambigus/Le Chauffeur de Bus.md"},
+		{"id":"0de14770b2cfb53b","x":1167,"y":-695,"width":693,"height":515,"color":"1","type":"file","file":"Obsidian Wiki/Roles/Voleurs/Le Voleur.md"},
+		{"id":"5161960e2a73e6f8","x":1167,"y":-110,"width":693,"height":510,"color":"1","type":"file","file":"Obsidian Wiki/Roles/Voleurs/L'Enfant des Rues.md"}
+	],
+	"edges":[
+		{"id":"db06848d44bddd4a","fromNode":"2382778f6d631b69","fromSide":"right","toNode":"cc0ef9bf3317bd13","toSide":"bottom","color":"4"},
+		{"id":"24fabf08ee7c087f","fromNode":"4828b846a3cd0858","fromSide":"right","toNode":"cc0ef9bf3317bd13","toSide":"bottom","color":"4"},
+		{"id":"e5045abdd7239a15","fromNode":"e40df91e28d33194","fromSide":"right","toNode":"4828b846a3cd0858","toSide":"left","color":"6"},
+		{"id":"be1d4a304bb8427c","fromNode":"4068ea1789961b1d","fromSide":"top","toNode":"cc0ef9bf3317bd13","toSide":"bottom","color":"6"},
+		{"id":"86ffe2f73691b827","fromNode":"57a91d072c1e88a0","fromSide":"top","toNode":"cc0ef9bf3317bd13","toSide":"bottom","color":"6"},
+		{"id":"08db6aeb35aee0b8","fromNode":"0de14770b2cfb53b","fromSide":"left","toNode":"cc0ef9bf3317bd13","toSide":"right","color":"1"},
+		{"id":"f46c0b7dda0c7f12","fromNode":"5161960e2a73e6f8","fromSide":"left","toNode":"cc0ef9bf3317bd13","toSide":"right","color":"1"}
+	]
+}
