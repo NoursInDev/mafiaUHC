@@ -1,13 +1,15 @@
 package org.noursindev.mafiauhc.elements
 
-class boite(players : Array<String>, config: Array<Int>) {
+import org.bukkit.entity.Player
+
+class Boite(players : Array<Player>, config: Array<Int> = arrayOf(0, 0, 0, 0, 0)) {
     private var pierres : Int = 0
     private var fideles : Int = 0
     private var agents : Int = 0
     private var chauffeurs : Int = 0
     private var nettoyeurs : Int = 0
 
-    private var players : Array<String>
+    private var players : Array<Player>
 
     init {
         this.players = players
@@ -22,7 +24,7 @@ class boite(players : Array<String>, config: Array<Int>) {
         return arrayOf(pierres, fideles, agents, chauffeurs, nettoyeurs)
     }
 
-    fun donneOrdre() : Array<String> {
+    fun donneOrdre() : Array<Player> {
         return players
     }
 
@@ -46,8 +48,8 @@ class boite(players : Array<String>, config: Array<Int>) {
         nettoyeurs = nb
     }
 
-    fun retirePlayer(player : String) : Boolean {
-        val newPlayers = mutableListOf<String>()
+    fun retirePlayer(player : Player) : Boolean {
+        val newPlayers = mutableListOf<Player>()
         for (p in players){
             if (p == player){
                 break
@@ -63,8 +65,8 @@ class boite(players : Array<String>, config: Array<Int>) {
         return true
     }
 
-    fun ajoutePlayer(player : String) : Boolean {
-        val newPlayers = mutableListOf<String>()
+    fun ajoutePlayer(player : Player) : Boolean {
+        val newPlayers = mutableListOf<Player>()
         for (p in players){
             if (p == player){
                 return false
