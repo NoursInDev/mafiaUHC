@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.noursindev.mafiauhc.elements.GamePhase
+import java.io.ObjectInputFilter.Config
 
 class commandRead(private val plugin: MafiaUHC) : CommandExecutor{
 
@@ -22,12 +23,22 @@ class commandRead(private val plugin: MafiaUHC) : CommandExecutor{
                 if (plugin.phase != null){
                     when (plugin.phase!!.javaClass){
                         ConfigPhase::class.java -> {
-                            if (args[0] == "rmplayer" && args[1] != null) {
-                                println("todo")
-                            }
+                            when (args[0]){
+                                "rmplayer" -> {
+                                    val configPhase = plugin.phase as ConfigPhase
+                                    if (args.size == 1 || plugin.server.getPlayer(args[1]) == null) {
+                                        sender.sendMessage("Joueur introuvable")
+                                    } else if (configPhase.boite.playerDansListe(args[1])) {
+                                        sender.sendMessage("Retrait d'un joueur")
+                                    } else {
+                                        sender.sendMessage("Aucun joueur à retirer")
+                                    }
+                                }
 
-                            if (args[0] == "start") {
-                                println("todo")
+                                "start" -> {
+                                    sender.sendMessage("Démarrage de la partie")
+                                    plugin.phase = GamePhase(plugin.server.onlinePlayers.toTypedArray())
+                                }
                             }
                         }
                         GamePhase::class.java -> {

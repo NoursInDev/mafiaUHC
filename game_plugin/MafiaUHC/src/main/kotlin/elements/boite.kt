@@ -80,4 +80,13 @@ class Boite(players : Array<Player>, config: Array<Int> = arrayOf(0, 0, 0, 0, 0)
         return true
     }
 
+    fun playerDansListe(playername : String) : Boolean {
+        for (p in players){
+            if (p.name == playername){
+                return true
+            }
+        }
+        return false
+    }
+
 }

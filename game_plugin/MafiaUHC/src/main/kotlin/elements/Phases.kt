@@ -1,6 +1,5 @@
 package org.noursindev.mafiauhc.elements
 
-import net.minecraft.server.v1_8_R3.PlayerList
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.Server
@@ -12,7 +11,7 @@ interface Phase {
 class ConfigPhase(configurateur : CommandSender, players : Array<Player>) : Phase {
     override val nomphase = "Phase de configuration"
     private val configurateur : CommandSender
-    private val boite : Boite
+    var boite : Boite
 
     init {
         this.configurateur = configurateur
