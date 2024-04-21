@@ -1,0 +1,8 @@
+name: MafiaUHC
+version: 0.0.5.1
+author: NoursInDev
+main: org.noursindev.mafiauhc.MafiaUHC
+commands:
+  mf:
+    description: Main command for MafiaUHC
+    usage: /mf <subcommand>
