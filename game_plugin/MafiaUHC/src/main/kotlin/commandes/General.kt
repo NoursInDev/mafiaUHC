@@ -6,7 +6,8 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.noursindev.mafiauhc.elements.GamePhase
-import java.io.ObjectInputFilter.Config
+import org.noursindev.mafiauhc.gamefuncs.donneStuff
+import org.noursindev.mafiauhc.gamefuncs.teleport
 
 class commandRead(private val plugin: MafiaUHC) : CommandExecutor {
 
@@ -15,11 +16,14 @@ class commandRead(private val plugin: MafiaUHC) : CommandExecutor {
             args.isEmpty() || args[0] == "infos" || args[0] == "info" -> {
                 val pluginDt = plugin.description
                 sender.sendMessage(pluginDt.name + " v" + pluginDt.version + " by " + pluginDt.authors)
+                sender.sendMessage("Pour plus d'informations, /mf help")
             }
 
             args[0] == "config" -> {
                 if (sender.isOp) {
                     plugin.phase = ConfigPhase(sender, plugin.server.onlinePlayers.toTypedArray())
+                } else {
+                    sender.sendMessage("Vous n'avez pas les permissions nécessaires pour configurer la partie.")
                 }
             }
 
@@ -78,21 +82,45 @@ class commandRead(private val plugin: MafiaUHC) : CommandExecutor {
 
                                             "nettoyeurs" -> {
                                                 configPhase.boite.resetNettoyeurs(nb)
-                                                sender.sendMessage("Nombre de chauffeurs mis à " + nbstring)
+                                                sender.sendMessage("Nombre de nettoyeurs mis à " + nbstring)
+                                            }
+
+                                            else -> {
+                                                sender.sendMessage("Rôle ${args[1]} inconnu. Avez-vous mis au pluriel?")
                                             }
                                         }
                                     }
                                 }
 
+                                "list" -> {
+                                    sender.sendMessage(
+                                        "Liste des joueurs:" + configPhase.boite.donnePlayers()
+                                            .joinToString(", ") { p -> p.name })
+                                    sender.sendMessage(
+                                        "Liste des rôles: " + configPhase.boite.donneContenu()
+                                            .joinToString(", ") { i -> i.toString() } + " (pierres, fideles, agents, chauffeurs, nettoyeurs)")
+                                }
+
                                 "start" -> {
-                                    sender.sendMessage("Démarrage de la partie")
-                                    plugin.phase = GamePhase(plugin.server.onlinePlayers.toTypedArray())
+                                    if (configPhase.boite.donnePlayers().size < 1) {
+                                        sender.sendMessage("Pas assez de joueurs")
+                                    } else {
+                                        sender.sendMessage("Démarrage de la partie")
+                                        teleport(configPhase.boite.donnePlayers())
+                                        donneStuff(configPhase.boite.donnePlayers())
+                                        plugin.phase = GamePhase(configPhase.boite)
+                                        configPhase.boite.donnePlayers()
+                                            .forEach { p -> p.sendMessage("La partie commence!") }
+                                    }
+                                }
+
+                                else -> {
+                                    sender.sendMessage("Commande inconnue ou indisponible.")
                                 }
                             }
                         }
 
                         GamePhase::class.java -> {
-
                         }
                     }
                 } else {

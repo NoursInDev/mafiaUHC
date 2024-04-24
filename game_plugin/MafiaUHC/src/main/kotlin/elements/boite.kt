@@ -11,6 +11,8 @@ class Boite(players : Array<Player>, config: Array<Int> = arrayOf(0, 0, 0, 0, 0)
 
     private var players : Array<Player>
 
+    private var ordre : List<Player>? = null
+
     init {
         this.players = players
         this.pierres = config[0]
@@ -24,8 +26,16 @@ class Boite(players : Array<Player>, config: Array<Int> = arrayOf(0, 0, 0, 0, 0)
         return arrayOf(pierres, fideles, agents, chauffeurs, nettoyeurs)
     }
 
-    fun donneOrdre() : Array<Player> {
+    fun donnePlayers() : Array<Player> {
         return players
+    }
+
+    fun creerOrdre(players: Array<Player>){
+        ordre = players.toList().shuffled()
+    }
+
+    fun donneOrdre() : List<Player>? {
+        return ordre
     }
 
     fun resetPierres(nb : Int) {

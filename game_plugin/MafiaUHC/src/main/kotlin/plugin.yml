@@ -1,5 +1,5 @@
 name: MafiaUHC
-version: 0.0.6.1
+version: 0.0.7.3
 author: NoursInDev
 main: org.noursindev.mafiauhc.MafiaUHC
 commands:

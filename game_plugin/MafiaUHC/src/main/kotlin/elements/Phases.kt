@@ -24,15 +24,15 @@ class ConfigPhase(configurateur : CommandSender, players : Array<Player>) : Phas
     }
 }
 
-class GamePhase(joueurs : Array<Player>) : Phase {
+class GamePhase(boite : Boite) : Phase {
     override val nomphase = "Phase de jeu"
-    private val joueurs : MutableList<Player> = mutableListOf()
+    private var joueurs : MutableList<Player> = mutableListOf()
     private val serveur : Server = joueurs[0].server
+    private val boite : Boite
 
     init {
-        for (j in joueurs){
-            this.joueurs.add(j)
-        }
+        this.boite = boite
+        this.joueurs = boite.donnePlayers().toMutableList()
     }
 
     fun donneJoueurs() : MutableList<Player> {
