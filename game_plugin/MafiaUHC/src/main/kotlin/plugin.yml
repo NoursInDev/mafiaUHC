@@ -1,8 +1,16 @@
 name: MafiaUHC
-version: 0.0.7.4
+version: 0.0.8.2
 author: NoursInDev
 main: org.noursindev.mafiauhc.MafiaUHC
 commands:
   mf:
     description: Main command for MafiaUHC
     usage: /mf <subcommand>
+    aliases:
+      - mafiauhc
+  mfc :
+    description: Config command for MafiaUHC
+    usage: /mfc <subcommand>
+    aliases:
+      - mfconfig
+      - mafiauhcconfig
