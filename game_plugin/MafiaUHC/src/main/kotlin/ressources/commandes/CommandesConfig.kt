@@ -10,6 +10,11 @@ import org.noursindev.mafiauhc.ressources.Starter
 class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        if (args[0] == "joueurs") {
+            sender.sendMessage("Liste des joueurs:")
+            main.joueurs.forEach { sender.sendMessage(it.player.name) }
+            return true
+        }
         if (!sender.isOp || main.getPhase() != Phases.Configuration) {
             sender.sendMessage("Vous n'êtes pas autorisé à utiliser cette commande maintenant. Vous manquez de permissions ou la partie a déjà commencé.")
         } else when (args[0]) {
