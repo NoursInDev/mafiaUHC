@@ -21,7 +21,7 @@ class Ecoutes(main : MafiaUHC) : Listener {
         } else {
             if ((main.joueurs.find { it.player == event.player } == null) && (!event.player.isOp)) {
                 event.player.kickPlayer("@${main.name} Une partie est déjà en cours et vous n'êtes pas autorisé à la rejoindre.")
-            } else if (event.player.isOp) {
+            } else if (event.player.isOp && main.joueurs.find { it.player == event.player } == null) {
                 event.player.gameMode = org.bukkit.GameMode.SPECTATOR
                 event.player.sendMessage("@${main.name} " + ChatColor.RED.toString() + "Vous êtes en mode spectateur car une partie est déjà en cours.")
             }

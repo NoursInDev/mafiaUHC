@@ -16,24 +16,35 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
 
     override fun run() {
         if(timer == 0) {
+            Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
             val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
             main.joueurs.forEach() {
+                it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
                 donneStuff(it.player)
                 playerlist.add(it.player)
+                it.player.gameMode = org.bukkit.GameMode.SURVIVAL
+                it.player.addPotionEffect(org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
             }
             teleport(playerlist)
             main.setPhase(Phases.Minage)
-            this.cancel()
-        }
-        Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
-        main.joueurs.forEach() {
-            it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 1.0f)
+        } else if (timer > 0){
+            Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
+            main.joueurs.forEach() {
+                it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 1.0f)
+                it.player.level = timer
+            }
+        } else if (timer == -30) {
+            Bukkit.broadcastMessage("Fin de l'invincibilité!")
+            cancel()
         }
         timer--
     }
 
     fun donneStuff(player: Player) {
         player.inventory.clear()
+        player.level = 0
+        player.health = 20.0
+        player.foodLevel = 20
 
         player.inventory.addItem(ItemStack(Material.APPLE, 64)) // 64 apples
         player.inventory.addItem(ItemStack(Material.BOOK, 7)) // 7 books
@@ -66,7 +77,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                 z = Random.nextInt(-1000, 1000)
             } while (x*x + z*z < 300*300)
 
-            val y = p.world.getHighestBlockYAt(x, z)
+            val y = p.world.getHighestBlockYAt(x, z) + 2
             p.teleport(Location(p.world, x.toDouble(), y.toDouble(), z.toDouble()))
         }
     }
