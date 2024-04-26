@@ -11,8 +11,8 @@ class Boite(main : MafiaUHC) {
     private val main: MafiaUHC
 
     init {
-        autoConfig()
         this.main = main
+        autoConfig()
     }
 
     fun setPierres(pierres: Int) {
@@ -36,7 +36,7 @@ class Boite(main : MafiaUHC) {
     }
 
     fun autoConfig() {
-        val nbj = main.joueurs.size
+        val nbj : Int = main.joueurs.size
         this.pierres = nbj
         this.agents = nbj / 10 * 2
         this.chauffeurs = nbj / 11 * 2
