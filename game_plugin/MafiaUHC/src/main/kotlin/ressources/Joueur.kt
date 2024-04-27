@@ -7,6 +7,7 @@ import org.noursindev.mafiauhc.ressources.roles.RoleSuper
 class Joueur(player: CraftPlayer) {
     val player : CraftPlayer
     var role : RoleSuper? = null
+    var tour : Boolean = false
 
     init {
         this.player = player

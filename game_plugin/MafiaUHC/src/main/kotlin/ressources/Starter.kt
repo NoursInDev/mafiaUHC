@@ -17,14 +17,25 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
     override fun run() {
         if(timer == 0) {
             Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
+            if (main.parrain == null) {
+                main.setRandomParrain()
+            }
             val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
             main.joueurs.forEach() {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
                 donneStuff(it.player)
+                if (main.parrain != null && it == main.parrain) {
+                    it.player.sendMessage("Vous êtes le Parrain de cette partie.")
+                } else {
+                    it.player.sendMessage("Le Parrain de cette partie est ${main.parrain?.player?.name}.")
+                }
                 playerlist.add(it.player)
                 it.player.gameMode = org.bukkit.GameMode.SURVIVAL
                 it.player.addPotionEffect(org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
+                main.lancePartie()
             }
+            main.ordre = main.joueurs.shuffled().toTypedArray()
+            main.ordre = main.ordre?.filterNot { it == main.parrain }?.toTypedArray()
             teleport(playerlist)
             main.setPhase(Phases.Minage)
         } else if (timer > 0){
@@ -35,6 +46,9 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             }
         } else if (timer == -30) {
             Bukkit.broadcastMessage("Fin de l'invincibilité!")
+            for (joueur in main.joueurs) {
+                joueur.player.removePotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE)
+            }
             cancel()
         }
         timer--

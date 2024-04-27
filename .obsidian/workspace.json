@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "obsidian_wiki/Phases/minage.md",
+                "file": "obsidian_wiki/Roles/mafia/le_fidele.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "obsidian_wiki/Phases/minage.md",
+                "file": "obsidian_wiki/Roles/mafia/le_fidele.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "obsidian_wiki/Phases/minage.md",
+                "file": "obsidian_wiki/Roles/mafia/le_fidele.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "obsidian_wiki/Phases/minage.md"
+                "file": "obsidian_wiki/Roles/mafia/le_fidele.md"
               }
             }
           }
@@ -148,17 +148,19 @@
   },
   "active": "970c22137a6ea609",
   "lastOpenFiles": [
+    "game_plugin/MafiaUHC/src/main/kotlin/plugin.yml~",
     "game_plugin/MafiaUHC/build/snapshot/kotlin/compileKotlin/2.zip",
     "game_plugin/MafiaUHC/build/snapshot/kotlin/compileKotlin/1.zip",
     "game_plugin/MafiaUHC/build/snapshot/kotlin/compileKotlin/0.zip",
     "game_plugin/MafiaUHC/build/snapshot/kotlin/compileKotlin",
-    "game_plugin/MafiaUHC/src/main/kotlin/ressources/Ecoutes.kt~",
-    "game_plugin/MafiaUHC/src/main/kotlin/plugin.yml~",
+    "game_plugin/MafiaUHC/src/main/kotlin/ressources/GameTimer.kt~",
     "game_plugin/MafiaUHC/src/main/kotlin/ressources/commandes/CommandesConfig.kt~",
-    "game_plugin/MafiaUHC/src/main/kotlin/ressources/Starter.kt~",
-    "game_plugin/MafiaUHC/src/main/kotlin/Main.kt~",
-    "game_plugin/MafiaUHC/src/main/kotlin/ressources/Starter.kt",
-    "game_plugin/MafiaUHC/build/kotlin/compileKotlin/cacheable/caches-jvm/jvm/kotlin/dirty-output-classes.tab.keystream",
+    "game_plugin/MafiaUHC/src/main/kotlin/ressources/Boite.kt~",
+    "game_plugin/MafiaUHC/src/main/kotlin/ressources/commandes/CommandesIG.kt~",
+    "game_plugin/MafiaUHC/src/main/kotlin/ressources/roles/Nettoyeur.kt~",
+    "game_plugin/MafiaUHC/src/main/kotlin/ressources/roles/Fidele.kt~",
+    "obsidian_wiki/le_mode_de_jeu.md",
+    "obsidian_wiki/Phases/minage.md",
     "obsidian_wiki/Roles/abstract_role.md",
     "obsidian_wiki/Roles/Roles.canvas",
     "game_plugin/MafiaUHC/lib/Spigot/Spigot-Server/README.md",
@@ -169,7 +171,6 @@
     "game_plugin/MafiaUHC/lib/CraftBukkit/CONTRIBUTING.md",
     "game_plugin/MafiaUHC/lib/CraftBukkit/README.md",
     "game_plugin/MafiaUHC/lib/Bukkit/README.md",
-    "obsidian_wiki/Le mode de Jeu.md",
     "obsidian_wiki/Evenements/guerre_civile.md",
     "obsidian_wiki/Phases/active.md",
     "obsidian_wiki/Roles/Mmafia/le_parrain.md",
@@ -184,7 +185,6 @@
     "obsidian_wiki/Roles/mafia/le_parrain.md",
     "obsidian_wiki/Roles/mafia/le_fidele.md",
     "obsidian_wiki/Phases/finale.md",
-    "obsidian_wiki/Phases/minage.md",
     "Obsidian Wiki/Roles/Roles.canvas",
     "muhc.jpeg"
   ]

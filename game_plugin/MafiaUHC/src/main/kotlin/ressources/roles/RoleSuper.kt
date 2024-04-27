@@ -1,6 +1,8 @@
 package org.noursindev.mafiauhc.ressources.roles
 
-abstract class RoleSuper {
+import org.noursindev.mafiauhc.MafiaUHC
+
+abstract class RoleSuper(val main : MafiaUHC) {
     abstract val nom: String
     abstract val description: String
 

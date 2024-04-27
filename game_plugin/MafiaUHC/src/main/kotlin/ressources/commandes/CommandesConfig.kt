@@ -10,6 +10,10 @@ import org.noursindev.mafiauhc.ressources.Starter
 class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        if (args.isEmpty()) {
+            sender.sendMessage("Usage: /mfc <start|set|rmjoueur|addjoueur|joueurs>")
+            return true
+        }
         if (args[0] == "joueurs") {
             sender.sendMessage("Liste des joueurs:")
             main.joueurs.forEach { sender.sendMessage(it.player.name) }
@@ -18,13 +22,49 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
         if (!sender.isOp || main.getPhase() != Phases.Configuration) {
             sender.sendMessage("Vous n'êtes pas autorisé à utiliser cette commande maintenant. Vous manquez de permissions ou la partie a déjà commencé.")
         } else when (args[0]) {
-            "start" -> { run {
-                val start = Starter(main)
-                start.runTaskTimer(main, 0, 20)
-            }}
-            "set" -> {
-                //TODO
+            "start" -> {
+                run {
+                    val start = Starter(main)
+                    start.runTaskTimer(main, 0, 20)
+                }
             }
+
+            "set" -> {
+                if (args.size < 3) {
+                    sender.sendMessage("Usage: /set <pierres|fideles|agents|chauffeurs|nettoyeurs|parrain> <argument>")
+                } else {
+                    when (args[1]) {
+                        "pierres" -> {
+                            main.boite.pierres = (args[2].toInt())
+                            sender.sendMessage("Le nombre de pierres a été fixé à ${args[2]}.")
+                        }
+                        "fideles" -> {
+                            main.boite.fideles = (args[2].toInt())
+                            sender.sendMessage("Le nombre de fidèles a été fixé à ${args[2]}.")
+                        }
+                        "agents" -> {
+                            main.boite.agents = (args[2].toInt())
+                            sender.sendMessage("Le nombre d'agents a été fixé à ${args[2]}.")
+                        }
+                        "chauffeurs" -> {
+                            main.boite.chauffeurs = (args[2].toInt())
+                            sender.sendMessage("Le nombre de chauffeurs a été fixé à ${args[2]}.")
+                        }
+                        "nettoyeurs" -> {
+                            main.boite.nettoyeurs = (args[2].toInt())
+                            sender.sendMessage("Le nombre de nettoyeurs a été fixé à ${args[2]}.")
+                        }
+                        "parrain" -> {
+                            main.setParrain(main.joueurs.find { it.player.name == args[2] }!!)
+                            sender.sendMessage("Le parrain a été fixé à ${args[2]}.")
+                        }
+                        else -> {
+                            sender.sendMessage("Usage: /set <pierres|fideles|agents|chauffeurs|nettoyeurs|parrain> <argument>")
+                        }
+                    }
+                }
+            }
+
             "rmjoueur" -> {
                 if (args.size < 2) {
                     sender.sendMessage("Usage: /rmjoueur <pseudo>")
@@ -41,6 +81,7 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                     }
                 }
             }
+
             "addjoueur" -> {
                 if (args.size < 2) {
                     sender.sendMessage("Usage: /addjoueur <pseudo>")
@@ -57,10 +98,12 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                     }
                 }
             }
+
             "joueurs" -> {
                 sender.sendMessage("Liste des joueurs:")
                 main.joueurs.forEach { sender.sendMessage(it.player.name) }
             }
+
             else -> {
                 sender.sendMessage("Usage: /mfc <start|set|rmjoueur|addjoueur|joueurs>")
             }

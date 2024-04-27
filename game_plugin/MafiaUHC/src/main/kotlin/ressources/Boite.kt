@@ -3,36 +3,26 @@ package org.noursindev.mafiauhc.ressources
 import org.noursindev.mafiauhc.MafiaUHC
 
 class Boite(main : MafiaUHC) {
-    private var pierres: Int = 0
-    private var fideles: Int = 0
-    private var agents: Int = 0
-    private var chauffeurs: Int = 0
-    private var nettoyeurs: Int = 0
-    private val main: MafiaUHC
+    var pierres: Int = 0
+    var fideles: Int = 0
+    var agents: Int = 0
+    var chauffeurs: Int = 0
+    var nettoyeurs: Int = 0
+    val main: MafiaUHC
 
     init {
         this.main = main
         autoConfig()
     }
 
-    fun setPierres(pierres: Int) {
-        this.pierres = pierres
-    }
-
-    fun setFideles(fideles: Int) {
-        this.fideles = fideles
-    }
-
-    fun setAgents(agents: Int) {
-        this.agents = agents
-    }
-
-    fun setChauffeurs(chauffeurs: Int) {
-        this.chauffeurs = chauffeurs
-    }
-
-    fun setNettoyeurs(nettoyeurs: Int) {
-        this.nettoyeurs = nettoyeurs
+    fun retourneBoite() : Map<String, Int> {
+        val boite = mutableMapOf<String, Int>()
+        boite["pierres"] = this.pierres
+        boite["fideles"] = this.fideles
+        boite["agents"] = this.agents
+        boite["chauffeurs"] = this.chauffeurs
+        boite["nettoyeurs"] = this.nettoyeurs
+        return boite
     }
 
     fun autoConfig() {
