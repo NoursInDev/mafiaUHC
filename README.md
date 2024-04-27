@@ -1,5 +1,5 @@
 # Mafia UHC, WTHIT
-MafiaUHC is Mafia de Cuba ported as a minecraft lies and betrayal plugin like LG UHC, Death Note UHC or Taupe Gun UHC.
+Mafia UHC adapts the Mafia de Cuba board game into an LG-like game of lies and betrayal within the UHC framework on Minecraft.
 
 # Project Broadcasting
-Opened
+You can track the progress of the code in the game_plugin and find the obsidian files in obsidian_wiki. GitHub releases will be published upon completion of each Beta or Release version. A GitBook will be created after the completion of the first beta version.
