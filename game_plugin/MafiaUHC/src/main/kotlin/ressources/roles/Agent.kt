@@ -9,5 +9,4 @@ class Agent(main : MafiaUHC):RoleSuper(main = main) {
     override fun roleShow(): String {
         return description
     }
-
 }

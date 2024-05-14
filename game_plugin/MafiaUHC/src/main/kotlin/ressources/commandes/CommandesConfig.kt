@@ -19,6 +19,10 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
             main.joueurs.forEach { sender.sendMessage(it.player.name) }
             return true
         }
+        if (args[0] == "phase") {
+            sender.sendMessage("La phase actuelle est ${main.getPhase()}.")
+            return true
+        }
         if (!sender.isOp || main.getPhase() != Phases.Configuration) {
             sender.sendMessage("Vous n'êtes pas autorisé à utiliser cette commande maintenant. Vous manquez de permissions ou la partie a déjà commencé.")
         } else when (args[0]) {
@@ -28,7 +32,6 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                     start.runTaskTimer(main, 0, 20)
                 }
             }
-
             "set" -> {
                 if (args.size < 3) {
                     sender.sendMessage("Usage: /set <pierres|fideles|agents|chauffeurs|nettoyeurs|parrain> <argument>")
@@ -55,6 +58,16 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                             sender.sendMessage("Le nombre de nettoyeurs a été fixé à ${args[2]}.")
                         }
                         "parrain" -> {
+                            if (args[2] == "no") {
+                                main.setParrain(null)
+                                sender.sendMessage("Le parrain a été retiré.")
+                                return true
+                            }
+                            if (args[2] == "rd") {
+                                main.setRandomParrain()
+                                sender.sendMessage("Le parrain a été fixé aléatoirement.")
+                                return true
+                            }
                             main.setParrain(main.joueurs.find { it.player.name == args[2] }!!)
                             sender.sendMessage("Le parrain a été fixé à ${args[2]}.")
                         }

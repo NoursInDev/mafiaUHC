@@ -1,8 +1,11 @@
 package org.noursindev.mafiauhc.ressources
 
+import net.md_5.bungee.api.chat.ClickEvent
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.scheduler.BukkitRunnable
 import org.noursindev.mafiauhc.MafiaUHC
 import org.bukkit.Bukkit
+import org.bukkit.inventory.Inventory
 import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.roles.*
 
@@ -10,7 +13,7 @@ class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
     private var time: Int = 0
     override fun run() {
         when (time) {
-            60 -> {
+            15 -> {
                 println("Tour de la boite.")
                 lancerTours()
             }
@@ -19,26 +22,28 @@ class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
     }
 
     private fun lancerTours() {
-        main.ordre?.forEach { joueur ->
-            joueur.player.sendMessage("C'est à vous de choisir un role.")
-            joueur.player.sendMessage("Voici le contenu de la boite: ")
-            main.boite.retourneBoite().forEach { (key, value) ->
-                joueur.player.sendMessage("$key : $value")
-            }
+        var go : Boolean = true
+        while (main.ordre!!.any() { it.role == null }) {
+            if (!go) break
+            go = false
+            val joueur = main.ordre!!.first { it.role == null }
             joueur.tour = true
+            val message = TextComponent("Vous recevez la Boite de Cigares. ")
+            message.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mf ouvrir")
+
+            joueur.player.spigot().sendMessage(message)
 
             Bukkit.getScheduler().runTaskLater(main, Runnable {
                 if (joueur.role == null) {
                     roleAttribution(joueur)
                 }
-
                 joueur.tour = false
+                go = true
             }, 600L)
         }
     }
 
     private fun roleAttribution(joueur: Joueur) {
-            lateinit var roleChoisi : RoleSuper
             val rolesDisponibles = mutableListOf<RoleSuper>()
             if (main.boite.fideles > 0) rolesDisponibles.add(Fidele(main))
             if (main.boite.agents > 0) rolesDisponibles.add(Agent(main))
@@ -51,7 +56,7 @@ class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
 
             } else {
                 joueur.role = rolesDisponibles.random()
-                when (roleChoisi) {
+                when (joueur.role!!) {
                     Fidele(main) -> main.boite.fideles--
                     Agent(main) -> main.boite.agents--
                     Chauffeur(main) -> main.boite.chauffeurs--

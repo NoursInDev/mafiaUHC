@@ -17,9 +17,6 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
     override fun run() {
         if(timer == 0) {
             Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
-            if (main.parrain == null) {
-                main.setRandomParrain()
-            }
             val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
             main.joueurs.forEach() {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)

@@ -47,8 +47,8 @@ class MafiaUHC : JavaPlugin() {
         return phase
     }
 
-    fun setParrain(joueur: Joueur) {
-        joueurs.forEach { it.player.sendMessage("Le parrain est à présent ${joueur.player.name}.") }
+    fun setParrain(joueur: Joueur?) {
+        joueurs.forEach { it.player.sendMessage("Le parrain est à présent ${joueur?.player?.name}.") }
     }
 
     fun setRandomParrain() {
