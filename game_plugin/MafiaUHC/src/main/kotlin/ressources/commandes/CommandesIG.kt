@@ -52,7 +52,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             if (args.size > 2 && main.boite.pierres >= args[2].toInt()) {
                                 main.boite.pierres -= args[2].toInt()
                                 joueur.role = Voleur(main)
-                                sender.sendMessage("Vous avez pris ${args[2]} pierres.")
+                                sender.sendMessage("Vous avez pris ${args[2]} pierres. Vous êtes Voleur.")
                             } else if (args.size == 2) {
                                 joueur.player.openInventory(pierresInvConstruct(main))
                             } else {

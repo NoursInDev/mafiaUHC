@@ -62,6 +62,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         }
 
         if (inv.name == "§dBoite de Cigares") {
+            event.isCancelled = true
             when (item.itemMeta.displayName) {
                 "pierres" -> {
                     joueur.player.closeInventory()
@@ -112,10 +113,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 }
 
                 "Valider" -> {
-                    main.boite.pierres -= count
-                    joueur.role = Voleur(main)
-                    joueur!!.role!!.pierres = count
-                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre pierres $count") })
                 }
             }
         }
