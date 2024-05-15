@@ -30,6 +30,7 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                 run {
                     val start = Starter(main)
                     start.runTaskTimer(main, 0, 20)
+                    main.setPhase(Phases.Minage)
                 }
             }
             "set" -> {

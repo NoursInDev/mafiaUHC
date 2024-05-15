@@ -34,7 +34,6 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             main.ordre = main.joueurs.shuffled().toTypedArray()
             main.ordre = main.ordre?.filterNot { it == main.parrain }?.toTypedArray()
             teleport(playerlist)
-            main.setPhase(Phases.Minage)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
             main.joueurs.forEach() {
