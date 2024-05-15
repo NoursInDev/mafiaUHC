@@ -2,23 +2,14 @@ package org.noursindev.mafiauhc.ressources
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.resources.Joueur
-import org.noursindev.mafiauhc.ressources.inventaires.pierresInvConstruct
-import org.noursindev.mafiauhc.ressources.roles.Agent
-import org.noursindev.mafiauhc.ressources.roles.Chauffeur
-import org.noursindev.mafiauhc.ressources.roles.Fidele
-import org.noursindev.mafiauhc.ressources.roles.Nettoyeur
-import org.noursindev.mafiauhc.ressources.roles.Voleur
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
     @EventHandler
@@ -70,50 +61,58 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 }
 
                 "fideles" -> {
-                    main.boite.fideles--
-                    joueur.role = Fidele(main)
                     joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre fidele") })
                 }
 
                 "agents" -> {
-                    main.boite.agents--
-                    joueur.role = Agent(main)
                     joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre agent") })
                 }
 
                 "chauffeurs" -> {
-                    main.boite.chauffeurs--
-                    joueur.role = Chauffeur(main)
                     joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre chauffeur") })
                 }
 
                 "nettoyeurs" -> {
-                    main.boite.nettoyeurs--
-                    joueur.role = Nettoyeur(main)
                     joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre nettoyeur") })
+                }
+
+                "enfants des rues" -> {
+                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre enfantdesrues") })
+
                 }
             }
         }
         if (inv.name == "§dPierres") {
             event.isCancelled = true
-            var count = 1
+            var count = inv.contents[4].amount
             when (item.itemMeta.displayName) {
                 "-1" -> {
-                    if (main.boite.pierres > count && count > 1) {
+                    if (count > 1) {
                         count--
                         inv.contents[4].amount = count
+                        print("-1 -> Count : $count ; Pierres : ${main.boite.pierres}")
                     }
                 }
-
                 "+1" -> {
-                    if (main.boite.pierres > count && count > 1) {
+                    if (main.boite.pierres > count) {
                         count++
                         inv.contents[4].amount = count
+                        print("+1 -> Count : $count ; Pierres : ${main.boite.pierres}")
                     }
+                }
+                "Annuler" -> {
+                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf ouvrir") })
                 }
 
                 "Valider" -> {
                     Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre pierres $count") })
+                    joueur.player.closeInventory()
                 }
             }
         }

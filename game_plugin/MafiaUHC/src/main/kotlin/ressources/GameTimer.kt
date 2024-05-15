@@ -36,6 +36,7 @@ class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
             Bukkit.getScheduler().runTaskLater(main, Runnable {
                 if (joueur.role == null) {
                     roleAttribution(joueur)
+                    joueur.player.closeInventory()
                 }
                 joueur.tour = false
                 go = true

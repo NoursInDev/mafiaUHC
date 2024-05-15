@@ -37,7 +37,11 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 }
 
                 "role" -> {
-
+                    if (joueur?.role != null) {
+                        sender.sendMessage(joueur.role!!.description)
+                    } else {
+                        sender.sendMessage("Vous n'avez pas de role.")
+                    }
                 }
 
                 "boite" -> {
@@ -48,66 +52,64 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
 
                 "prendre" -> {
                     if (args.size > 1 && joueur != null && joueur.tour) {
-                        if (args[1] == "pierres") {
-                            if (args.size > 2 && main.boite.pierres >= args[2].toInt()) {
-                                main.boite.pierres -= args[2].toInt()
-                                joueur.role = Voleur(main)
-                                sender.sendMessage("Vous avez pris ${args[2]} pierres. Vous êtes Voleur.")
-                            } else if (args.size == 2) {
-                                joueur.player.openInventory(pierresInvConstruct(main))
-                            } else {
-                                sender.sendMessage("Il n'y a pas assez de pierres dans la boite.")
-                            }
-
-                        } else if (args.size > 2) {
-                            when (args[1]) {
-                                "fidele" -> {
-                                    if (main.boite.fideles > 0) {
-                                        main.boite.fideles--
-                                        joueur.role = Fidele(main)
-                                    } else {
-                                        sender.sendMessage("Il n'y a plus de fidèles dans la boite")
-                                    }
-                                }
-
-                                "agent" -> {
-                                    if (main.boite.agents > 0) {
-                                        main.boite.agents--
-                                        joueur.role = Agent(main)
-                                    } else {
-                                        sender.sendMessage("Il n'y a plus d'agents dans la boite")
-                                    }
-                                }
-
-                                "chauffeur" -> {
-                                    if (main.boite.chauffeurs > 0) {
-                                        main.boite.chauffeurs--
-                                        joueur.role = Chauffeur(main)
-                                    } else {
-                                        sender.sendMessage("Il n'y a plus de chauffeurs dans la boite")
-                                    }
-                                }
-
-                                "nettoyeur" -> {
-                                    if (main.boite.nettoyeurs > 0) {
-                                        main.boite.nettoyeurs--
-                                        joueur.role = Nettoyeur(main)
-                                    } else {
-                                        sender.sendMessage("Il n'y a plus de nettoyeurs dans la boite")
-                                    }
-                                }
-
-                                "enfantdesrues" -> {
-                                    if (main.ordre?.lastOrNull() == joueur || main.boite.retourneBoite()
-                                            .all { it.value == 0 }
-                                    ) {
-                                        joueur?.role = EnfantDesRues(main)
-                                    } else {
-                                        sender.sendMessage("Il reste des roles dans la boite")
-                                    }
+                        when (args[1]) {
+                            "pierres" -> {
+                                if (args.size > 2 && main.boite.pierres >= args[2].toInt()) {
+                                    main.boite.pierres -= args[2].toInt()
+                                    joueur.role = Voleur(main)
+                                    sender.sendMessage("Vous avez pris ${args[2]} pierres. Vous êtes Voleur.")
+                                } else if (args.size == 2) {
+                                    joueur.player.openInventory(pierresInvConstruct(main))
+                                } else {
+                                    sender.sendMessage("Il n'y a pas assez de pierres dans la boite.")
                                 }
                             }
 
+                            "fidele" -> {
+                                if (main.boite.fideles > 0) {
+                                    main.boite.fideles--
+                                    joueur.role = Fidele(main)
+                                } else {
+                                    sender.sendMessage("Il n'y a plus de fidèles dans la boite")
+                                }
+                            }
+
+                            "agent" -> {
+                                if (main.boite.agents > 0) {
+                                    main.boite.agents--
+                                    joueur.role = Agent(main)
+                                } else {
+                                    sender.sendMessage("Il n'y a plus d'agents dans la boite")
+                                }
+                            }
+
+                            "chauffeur" -> {
+                                if (main.boite.chauffeurs > 0) {
+                                    main.boite.chauffeurs--
+                                    joueur.role = Chauffeur(main)
+                                } else {
+                                    sender.sendMessage("Il n'y a plus de chauffeurs dans la boite")
+                                }
+                            }
+
+                            "nettoyeur" -> {
+                                if (main.boite.nettoyeurs > 0) {
+                                    main.boite.nettoyeurs--
+                                    joueur.role = Nettoyeur(main)
+                                } else {
+                                    sender.sendMessage("Il n'y a plus de nettoyeurs dans la boite")
+                                }
+                            }
+
+                            "enfantdesrues" -> {
+                                if (main.ordre?.lastOrNull() == joueur || main.boite.retourneBoite()
+                                        .all { it.value == 0 }
+                                ) {
+                                    joueur?.role = EnfantDesRues(main)
+                                } else {
+                                    sender.sendMessage("Il reste des roles dans la boite")
+                                }
+                            }
                         }
                     } else {
                         sender.sendMessage("Commande incorrecte ou manque d'arguments.")
