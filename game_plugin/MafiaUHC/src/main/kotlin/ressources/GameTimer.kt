@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory
 import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.roles.*
 
-class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
+class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
     private var time: Int = 0
     override fun run() {
         when (time) {
@@ -22,14 +22,15 @@ class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
     }
 
     private fun lancerTours() {
-        var go : Boolean = true
+        var go: Boolean = true
         while (main.ordre!!.any() { it.role == null }) {
             if (!go) break
             go = false
             val joueur = main.ordre!!.first { it.role == null }
             joueur.tour = true
-            val message = TextComponent("Vous recevez la Boite de Cigares. ")
+            val message = TextComponent("Vous recevez la Boite de Cigares. Cliquez sur ce message pour l'ouvrir.")
             message.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mf ouvrir")
+            message.color = net.md_5.bungee.api.ChatColor.DARK_PURPLE
 
             joueur.player.spigot().sendMessage(message)
 
@@ -45,25 +46,25 @@ class GameTimer(private val main : MafiaUHC): BukkitRunnable() {
     }
 
     private fun roleAttribution(joueur: Joueur) {
-            val rolesDisponibles = mutableListOf<RoleSuper>()
-            if (main.boite.fideles > 0) rolesDisponibles.add(Fidele(main))
-            if (main.boite.agents > 0) rolesDisponibles.add(Agent(main))
-            if (main.boite.chauffeurs > 0) rolesDisponibles.add(Chauffeur(main))
-            if (main.boite.nettoyeurs > 0) rolesDisponibles.add(Nettoyeur(main))
-            if (main.boite.pierres > 0) rolesDisponibles.add(Voleur(main))
+        val rolesDisponibles = mutableListOf<RoleSuper>()
+        if (main.boite.fideles > 0) rolesDisponibles.add(Fidele(main))
+        if (main.boite.agents > 0) rolesDisponibles.add(Agent(main))
+        if (main.boite.chauffeurs > 0) rolesDisponibles.add(Chauffeur(main))
+        if (main.boite.nettoyeurs > 0) rolesDisponibles.add(Nettoyeur(main))
+        if (main.boite.pierres > 0) rolesDisponibles.add(Voleur(main))
 
-            if (rolesDisponibles.isEmpty()) {
-                joueur.role = EnfantDesRues(main)
+        if (rolesDisponibles.isEmpty()) {
+            joueur.role = EnfantDesRues(main)
 
-            } else {
-                joueur.role = rolesDisponibles.random()
-                when (joueur.role!!) {
-                    Fidele(main) -> main.boite.fideles--
-                    Agent(main) -> main.boite.agents--
-                    Chauffeur(main) -> main.boite.chauffeurs--
-                    Nettoyeur(main) -> main.boite.nettoyeurs--
-                    Voleur(main) -> main.boite.pierres--
-                }
+        } else {
+            joueur.role = rolesDisponibles.random()
+            when (joueur.role!!) {
+                Fidele(main) -> main.boite.fideles--
+                Agent(main) -> main.boite.agents--
+                Chauffeur(main) -> main.boite.chauffeurs--
+                Nettoyeur(main) -> main.boite.nettoyeurs--
+                Voleur(main) -> main.boite.pierres--
+            }
         }
         joueur.player.sendMessage("Votre rôle a été définit automatiquement. Vous êtes ${joueur.role!!.nom}.")
     }

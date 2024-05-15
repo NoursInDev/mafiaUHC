@@ -1,5 +1,5 @@
 name: MafiaUHC
-version: 0.0.12.0DEV
+version: 0.0.12.5DEV
 author: NoursInDev
 main: org.noursindev.mafiauhc.MafiaUHC
 commands:
@@ -8,7 +8,7 @@ commands:
     usage: /mf <subcommand>
     aliases:
       - mafiauhc
-  mfc :
+  mfc:
     description: Config command for MafiaUHC
     usage: /mfc <subcommand>
     aliases:

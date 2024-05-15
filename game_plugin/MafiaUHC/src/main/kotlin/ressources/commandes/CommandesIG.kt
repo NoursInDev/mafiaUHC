@@ -10,11 +10,6 @@ import org.noursindev.mafiauhc.ressources.inventaires.pierresInvConstruct
 import org.noursindev.mafiauhc.ressources.roles.*
 
 class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
-
-    private fun setInvItems(inv: Inventory) {
-
-    }
-
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
         val joueur = main.joueurs.find { it.player.name == sender.name }    // recup joueur
@@ -23,8 +18,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
             when (args[0]) {
                 "ordre" -> {
                     sender.sendMessage("Ordre des joueurs:")
-                    for (joueur in 0 until (main.ordre?.size ?: 0)) {
-                        sender.sendMessage("${joueur + 1}. ${main.ordre?.get(joueur)?.player?.name}")
+                    for (j in 0 until (main.ordre?.size ?: 0)) {
+                        sender.sendMessage("${j + 1}. ${main.ordre?.get(j)?.player?.name}")
                     }
                 }
 
@@ -46,7 +41,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
 
                 "boite" -> {
                     if (args.size > 1 && (args[1] == "init" || args[1] == "tour") && joueur?.role != null) {
-                        sender.sendMessage(joueur!!.role!!.description)
+                        sender.sendMessage(joueur.role!!.description)
                     }
                 }
 
@@ -105,11 +100,14 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                                 if (main.ordre?.lastOrNull() == joueur || main.boite.retourneBoite()
                                         .all { it.value == 0 }
                                 ) {
-                                    joueur?.role = EnfantDesRues(main)
+                                    joueur.role = EnfantDesRues(main)
                                 } else {
                                     sender.sendMessage("Il reste des roles dans la boite")
                                 }
                             }
+                        }
+                        if (joueur.role != null) {
+                            sender.sendMessage(joueur.role!!.description)
                         }
                     } else {
                         sender.sendMessage("Commande incorrecte ou manque d'arguments.")

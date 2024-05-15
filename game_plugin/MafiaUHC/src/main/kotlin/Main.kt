@@ -18,12 +18,17 @@ class MafiaUHC : JavaPlugin() {
     private var phase: Phases = Phases.Configuration
     var joueurs: MutableSet<Joueur> = mutableSetOf()
     lateinit var boite: Boite
-    var ordre : Array<Joueur>? = null
-    var parrain : Joueur? = null
+    var ordre: Array<Joueur>? = null
+    var parrain: Joueur? = null
         private set
 
     override fun onEnable() {
         logger.info("MafiaUHC est activé pour votre serveur.")
+
+        val world = server.worlds[0]
+        world.setGameRuleValue("naturalRegeneration", "false")
+        world.setGameRuleValue("deathMessages", "false")
+
         setPhase(Phases.Configuration)
         joueurs = Bukkit.getOnlinePlayers().mapTo(mutableSetOf()) { Joueur(it as CraftPlayer) }
         boite = Boite(this)

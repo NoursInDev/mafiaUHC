@@ -72,17 +72,20 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
                 "chauffeurs" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre chauffeur") })
+                    Bukkit.getScheduler()
+                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre chauffeur") })
                 }
 
                 "nettoyeurs" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre nettoyeur") })
+                    Bukkit.getScheduler()
+                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre nettoyeur") })
                 }
 
                 "enfants des rues" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre enfantdesrues") })
+                    Bukkit.getScheduler()
+                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre enfantdesrues") })
 
                 }
             }
@@ -98,6 +101,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                         print("-1 -> Count : $count ; Pierres : ${main.boite.pierres}")
                     }
                 }
+
                 "+1" -> {
                     if (main.boite.pierres > count) {
                         count++
@@ -105,13 +109,15 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                         print("+1 -> Count : $count ; Pierres : ${main.boite.pierres}")
                     }
                 }
+
                 "Annuler" -> {
                     joueur.player.closeInventory()
                     Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf ouvrir") })
                 }
 
                 "Valider" -> {
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre pierres $count") })
+                    Bukkit.getScheduler()
+                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre pierres $count") })
                     joueur.player.closeInventory()
                 }
             }
