@@ -3,11 +3,13 @@ package org.noursindev.mafiauhc.ressources.commandes
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.Phases
 import org.noursindev.mafiauhc.ressources.Starter
 import org.noursindev.mafiauhc.ressources.inventaires.nouvelOpener
+import org.noursindev.mafiauhc.resources.Joueur
 
 class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
@@ -38,7 +40,7 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                                 }
                             } else {
                                 if (args[0] == "addjoueur") {
-                                    main.config.joueurs.add(main.config.joueurs.find { it.player.name == args[1] }!!)
+                                    main.config.joueurs.add(Joueur(main.server.getPlayer(args[1]) as CraftPlayer))
                                     sender.sendMessage("Le joueur ${args[1]} a été ajouté à la partie.")
                                 } else {
                                     sender.sendMessage("Le joueur ${args[1]} n'est pas dans la partie.")

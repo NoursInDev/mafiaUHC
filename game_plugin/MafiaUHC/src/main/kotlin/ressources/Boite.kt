@@ -3,7 +3,7 @@ package org.noursindev.mafiauhc.ressources
 import org.noursindev.mafiauhc.MafiaUHC
 
 class Boite(main : MafiaUHC) {
-    var pierres: Int = 0
+    var pierres: Int = 1
     var fideles: Int = 0
     var agents: Int = 0
     var chauffeurs: Int = 0
