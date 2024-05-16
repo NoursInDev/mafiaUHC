@@ -103,6 +103,12 @@ fun borduresConfigConstructeur(config : Configuration): Inventory {
     dfmeta.displayName = "§dDistance de fin : ${config.bordure[3]} blocs"
     dammeta.displayName = "§dDégâts / seconde: ${config.bordure[4]}"
 
+    tdmeta.lore = mutableListOf("TD")
+    tfmeta.lore = mutableListOf("TF")
+    ddmeta.lore = mutableListOf("DD")
+    dfmeta.lore = mutableListOf("DF")
+    dammeta.lore = mutableListOf("DAM")
+
     td.itemMeta = tdmeta
     tf.itemMeta = tfmeta
     dd.itemMeta = ddmeta

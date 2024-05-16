@@ -65,11 +65,11 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     @EventHandler
     fun onClick(event: InventoryClickEvent) {
         val inv = event.inventory
-        println("OnClick : ${inv.name}")
         val joueur = main.config.joueurs.find { it.player.name == event.whoClicked.name }
         val player = event.whoClicked as CraftPlayer
 
         val item = event.currentItem
+        val itemmeta = item.itemMeta
 
         // PROBLEM CHECK
 
@@ -262,6 +262,93 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
                 else -> {}
             }
+        }
+
+        if (inv.name == "§dBordures") {
+            val config = main.config
+            event.isCancelled = true
+            when (event.click) {
+                ClickType.LEFT -> {
+                    when (item.itemMeta.lore) {
+                        mutableListOf("TD") -> {
+                            if (main.config.bordure[0] > 10) {
+                                main.config.bordure[0] -= 10
+                                itemmeta.displayName = "§dDébut de Réduction: ${config.bordure[0]} minutes"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("TF") -> {
+                            if (main.config.bordure[1] > 10 && main.config.bordure[1] > main.config.bordure[0] + 10) {
+                                main.config.bordure[1] -= 10
+                                itemmeta.displayName = "§dFin de Réduction : ${config.bordure[1]} minutes"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("DD") -> {
+                            if (main.config.bordure[2] >= 10 && main.config.bordure[2] > main.config.bordure[3]) {
+                                main.config.bordure[2] -= 10
+                                itemmeta.displayName = "§dDistance de début : ${config.bordure[2]} blocs"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("DF") -> {
+                            if (main.config.bordure[3] >= 10 && main.config.bordure[3] <= main.config.bordure[2]) {
+                                main.config.bordure[3] -= 10
+                                itemmeta.displayName = "§dDistance de fin : ${config.bordure[3]} blocs"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("DAM") -> {
+                            if (main.config.bordure[4] > 0) {
+                                main.config.bordure[4]--
+                                itemmeta.displayName = "§dDégâts / seconde: ${config.bordure[4]}"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+                ClickType.RIGHT -> {
+                    when (item.itemMeta.lore) {
+                        mutableListOf("TD") -> {
+                            if (main.config.bordure[0] < main.config.bordure[1] - 10) {
+                                main.config.bordure[0] += 10
+                                itemmeta.displayName = "§dDébut de Réduction: ${config.bordure[0]} minutes"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("TF") -> {
+                            if (main.config.bordure[1] > main.config.bordure[0]) {
+                                main.config.bordure[1] += 10
+                                itemmeta.displayName = "§dFin de Réduction : ${config.bordure[1]} minutes"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("DD") -> {
+                            if (main.config.bordure[2] < 2000000) {
+                                main.config.bordure[2] += 10
+                                itemmeta.displayName = "§dDistance de début : ${config.bordure[2]} blocs"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("DF") -> {
+                            if (main.config.bordure[3] < main.config.bordure[2]) {
+                                main.config.bordure[3] += 10
+                                itemmeta.displayName = "§dDistance de fin : ${config.bordure[3]} blocs"
+                                item.itemMeta = itemmeta
+                            }
+                        }
+                        mutableListOf("DAM") -> {
+                            main.config.bordure[4]++
+                            itemmeta.displayName = "§dDégâts / seconde: ${config.bordure[4]}"
+                            item.itemMeta = itemmeta
+                        }
+                        else -> {}
+                    }
+                }
+                else -> {}
+            }
+
         }
 
     }
