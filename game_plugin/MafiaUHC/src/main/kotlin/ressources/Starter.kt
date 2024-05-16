@@ -18,7 +18,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         if(timer == 0) {
             Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
             val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
-            main.joueurs.forEach() {
+            main.config.joueurs.forEach() {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
                 donneStuff(it.player)
                 if (main.parrain != null && it == main.parrain) {
@@ -31,18 +31,18 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                 it.player.addPotionEffect(org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
                 main.lancePartie()
             }
-            main.ordre = main.joueurs.shuffled().toTypedArray()
+            main.ordre = main.config.joueurs.shuffled().toTypedArray()
             main.ordre = main.ordre?.filterNot { it == main.parrain }?.toTypedArray()
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
-            main.joueurs.forEach() {
+            main.config.joueurs.forEach() {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 1.0f)
                 it.player.level = timer
             }
         } else if (timer == -30) {
             Bukkit.broadcastMessage("Fin de l'invincibilité!")
-            for (joueur in main.joueurs) {
+            for (joueur in main.config.joueurs) {
                 joueur.player.removePotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE)
             }
             cancel()

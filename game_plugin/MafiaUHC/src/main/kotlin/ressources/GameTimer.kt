@@ -47,11 +47,11 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
 
     private fun roleAttribution(joueur: Joueur) {
         val rolesDisponibles = mutableListOf<RoleSuper>()
-        if (main.boite.fideles > 0) rolesDisponibles.add(Fidele(main))
-        if (main.boite.agents > 0) rolesDisponibles.add(Agent(main))
-        if (main.boite.chauffeurs > 0) rolesDisponibles.add(Chauffeur(main))
-        if (main.boite.nettoyeurs > 0) rolesDisponibles.add(Nettoyeur(main))
-        if (main.boite.pierres > 0) rolesDisponibles.add(Voleur(main))
+        if (main.config.boite.fideles > 0) rolesDisponibles.add(Fidele(main))
+        if (main.config.boite.agents > 0) rolesDisponibles.add(Agent(main))
+        if (main.config.boite.chauffeurs > 0) rolesDisponibles.add(Chauffeur(main))
+        if (main.config.boite.nettoyeurs > 0) rolesDisponibles.add(Nettoyeur(main))
+        if (main.config.boite.pierres > 0) rolesDisponibles.add(Voleur(main))
 
         if (rolesDisponibles.isEmpty()) {
             joueur.role = EnfantDesRues(main)
@@ -59,11 +59,11 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
         } else {
             joueur.role = rolesDisponibles.random()
             when (joueur.role!!) {
-                Fidele(main) -> main.boite.fideles--
-                Agent(main) -> main.boite.agents--
-                Chauffeur(main) -> main.boite.chauffeurs--
-                Nettoyeur(main) -> main.boite.nettoyeurs--
-                Voleur(main) -> main.boite.pierres--
+                Fidele(main) -> main.config.boite.fideles--
+                Agent(main) -> main.config.boite.agents--
+                Chauffeur(main) -> main.config.boite.chauffeurs--
+                Nettoyeur(main) -> main.config.boite.nettoyeurs--
+                Voleur(main) -> main.config.boite.pierres--
             }
         }
         joueur.player.sendMessage("Votre rôle a été définit automatiquement. Vous êtes ${joueur.role!!.nom}.")

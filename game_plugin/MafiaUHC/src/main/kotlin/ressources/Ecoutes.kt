@@ -6,20 +6,28 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.resources.Joueur
+import org.noursindev.mafiauhc.ressources.inventaires.nouvelOpener
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
+
+    val configurateur = nouvelOpener()
+
     @EventHandler
     fun arriveeJoueur(event: PlayerJoinEvent) {
         if (main.getPhase() == Phases.Configuration) {
-            main.joueurs.add(Joueur(event.player as CraftPlayer))
+            main.config.joueurs.add(Joueur(event.player as CraftPlayer))
+            if(event.player.isOp) {
+                event.player.inventory.addItem(nouvelOpener())
+            }
         } else {
-            if ((main.joueurs.find { it.player == event.player } == null) && (!event.player.isOp)) {
+            if ((main.config.joueurs.find { it.player == event.player } == null) && (!event.player.isOp)) {
                 event.player.kickPlayer("@${main.name} Une partie est déjà en cours et vous n'êtes pas autorisé à la rejoindre.")
-            } else if (main.joueurs.find { it.player.name == event.player.name } == null) {
+            } else if (main.config.joueurs.find { it.player.name == event.player.name } == null) {
                 event.player.gameMode = org.bukkit.GameMode.SPECTATOR
                 event.player.sendMessage("@${main.name} " + ChatColor.RED.toString() + "Vous êtes en mode spectateur car une partie est déjà en cours.")
             } else {
@@ -30,8 +38,16 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
     @EventHandler
     fun departJoueur(event: PlayerQuitEvent) {
-        if (main.getPhase() == Phases.Configuration && main.joueurs.find { it.player == event.player } != null) {
-            main.joueurs.remove(main.joueurs.find { it.player == event.player }!!)
+        if (main.getPhase() == Phases.Configuration && main.config.joueurs.find { it.player == event.player } != null) {
+            main.config.joueurs.remove(main.config.joueurs.find { it.player == event.player }!!)
+        }
+    }
+
+    @EventHandler
+    fun dropItemProtege(event: PlayerDropItemEvent) {
+        val item = event.itemDrop.itemStack
+        if (item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags) {
+            event.isCancelled = true
         }
     }
 
@@ -39,7 +55,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     fun onClick(event: InventoryClickEvent) {
         val inv = event.inventory
         println("OnClick : ${inv.name}")
-        val joueur = main.joueurs.find { it.player.name == event.whoClicked.name }
+        val joueur = main.config.joueurs.find { it.player.name == event.whoClicked.name }
         if (joueur != null) {
             println("Joueur : ${joueur.player.name}")
         } else {
@@ -98,15 +114,15 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     if (count > 1) {
                         count--
                         inv.contents[4].amount = count
-                        print("-1 -> Count : $count ; Pierres : ${main.boite.pierres}")
+                        print("-1 -> Count : $count ; Pierres : ${main.config.boite.pierres}")
                     }
                 }
 
                 "+1" -> {
-                    if (main.boite.pierres > count) {
+                    if (main.config.boite.pierres > count) {
                         count++
                         inv.contents[4].amount = count
-                        print("+1 -> Count : $count ; Pierres : ${main.boite.pierres}")
+                        print("+1 -> Count : $count ; Pierres : ${main.config.boite.pierres}")
                     }
                 }
 

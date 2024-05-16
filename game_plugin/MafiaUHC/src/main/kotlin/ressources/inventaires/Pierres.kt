@@ -20,7 +20,7 @@ fun pierresInvConstruct(main : MafiaUHC) : Inventory {
     plusmeta.displayName = "+1"
     plus.itemMeta = plusmeta
 
-    val pierres = createPlayerHead(headLink["pierres"] ?: "Notch", "Pierres", main.boite.pierres)
+    val pierres = createPlayerHead(headLink["pierres"] ?: "Notch", "Pierres", main.config.boite.pierres)
     val pierresmeta: ItemMeta = pierres.itemMeta
     pierresmeta.displayName = "Pierres"
     pierres.itemMeta = pierresmeta

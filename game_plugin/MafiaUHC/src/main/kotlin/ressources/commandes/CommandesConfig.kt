@@ -3,9 +3,11 @@ package org.noursindev.mafiauhc.ressources.commandes
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.Phases
 import org.noursindev.mafiauhc.ressources.Starter
+import org.noursindev.mafiauhc.ressources.inventaires.nouvelOpener
 
 class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
@@ -19,23 +21,23 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                 when (args[0]) {
                     "joueurs" -> {
                         sender.sendMessage("Liste des joueurs:")
-                        main.joueurs.forEach { sender.sendMessage(it.player.name) }
+                        main.config.joueurs.forEach { sender.sendMessage(it.player.name) }
                     }
 
                     "rmjoueur", "addjoueur" -> {
                         if (args.size < 2 || main.server.getPlayer(args[1]) == null) {
                             sender.sendMessage("Usage: /mfc ${args[0]} <pseudo>\nLe joueur doit être connecté.")
                         } else {
-                            if (main.joueurs.find { it.player.name == args[1] } != null) {
+                            if (main.config.joueurs.find { it.player.name == args[1] } != null) {
                                 if (args[0] == "rmjoueur") {
-                                    main.joueurs.remove(main.joueurs.find { it.player.name == args[1] }!!)
+                                    main.config.joueurs.remove(main.config.joueurs.find { it.player.name == args[1] }!!)
                                     sender.sendMessage("Le joueur ${args[1]} a été retiré de la partie.")
                                 } else {
                                     sender.sendMessage("Le joueur ${args[1]} est déjà dans la partie.")
                                 }
                             } else {
                                 if (args[0] == "addjoueur") {
-                                    main.joueurs.add(main.joueurs.find { it.player.name == args[1] }!!)
+                                    main.config.joueurs.add(main.config.joueurs.find { it.player.name == args[1] }!!)
                                     sender.sendMessage("Le joueur ${args[1]} a été ajouté à la partie.")
                                 } else {
                                     sender.sendMessage("Le joueur ${args[1]} n'est pas dans la partie.")
@@ -47,11 +49,11 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
                     "boite" -> {
                         sender.sendMessage("Boite de la partie:")
-                        main.boite.retourneBoite().forEach { (k, v) -> sender.sendMessage("$k: $v") }
+                        main.config.boite.retourneBoite().forEach { (k, v) -> sender.sendMessage("$k: $v") }
                     }
 
                     "autoconfig" -> {
-                        main.boite.autoConfig()
+                        main.config.boite.autoConfig()
                         sender.sendMessage("La boite a été automatiquement configurée.")
                     }
 
@@ -63,20 +65,20 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                         *   normal : /mfc set parrain <pseudo> ou <pseudo> est un joueur connecté et dans la partie
                         */
 
-                        if (args[1] == "parrain" && (args[2] == "no" || args[2] == "rd" || (main.server.getPlayer(args[2]) != null && main.joueurs.find { it.player.name == args[2] } != null))) {
+                        if (args[1] == "parrain" && (args[2] == "no" || args[2] == "rd" || (main.server.getPlayer(args[2]) != null && main.config.joueurs.find { it.player.name == args[2] } != null))) {
                             when (args[2]) {
                                 "no" -> {
-                                    main.setParrain(null)
+                                    main.config.updateParrain(null)
                                     sender.sendMessage("Le parrain a été retiré.")
                                 }
 
                                 "rd" -> {
-                                    main.setRandomParrain()
+                                    main.config.setRandomParrain()
                                     sender.sendMessage("Le parrain a été fixé aléatoirement.")
                                 }
 
                                 else -> {
-                                    main.setParrain(main.joueurs.find { it.player.name == args[2] })
+                                    main.config.updateParrain(main.config.joueurs.find { it.player.name == args[2] })
                                     sender.sendMessage("Le parrain a été fixé à ${args[2]}.")
                                 }
                             }
@@ -86,27 +88,27 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                             val argument: Int = args[2].toInt()
                             when (args[1]) {
                                 "pierres" -> {
-                                    main.boite.pierres = argument
+                                    main.config.boite.pierres = argument
                                     sender.sendMessage("Le nombre de pierres a été fixé à $argument.")
                                 }
 
                                 "fideles" -> {
-                                    main.boite.fideles = argument
+                                    main.config.boite.fideles = argument
                                     sender.sendMessage("Le nombre de fidèles a été fixé à $argument.")
                                 }
 
                                 "agents" -> {
-                                    main.boite.agents = argument
+                                    main.config.boite.agents = argument
                                     sender.sendMessage("Le nombre d'agents a été fixé à $argument.")
                                 }
 
                                 "chauffeurs" -> {
-                                    main.boite.chauffeurs = argument
+                                    main.config.boite.chauffeurs = argument
                                     sender.sendMessage("Le nombre de chauffeurs a été fixé à $argument.")
                                 }
 
                                 "nettoyeurs" -> {
-                                    main.boite.nettoyeurs = argument
+                                    main.config.boite.nettoyeurs = argument
                                     sender.sendMessage("Le nombre de nettoyeurs a été fixé à $argument.")
                                 }
 
@@ -124,6 +126,14 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                             val start = Starter(main)
                             start.runTaskTimer(main, 0, 20)
                             main.setPhase(Phases.Minage)
+                        }
+                    }
+
+                    "configurateur" -> {
+                        if (sender is Player) {
+                            sender.player.inventory.addItem(nouvelOpener())
+                        } else {
+                            sender.sendMessage("Vous devez être un joueur pour ouvrir le configurateur.")
                         }
                     }
 

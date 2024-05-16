@@ -11,13 +11,13 @@ fun boiteInvConstruct(main: MafiaUHC): Inventory {
     var inv: Inventory = Bukkit.createInventory(null, 18, "§dBoite de Cigares")
     var count = inv.size - 1
 
-    for (element in 0 until main.boite.retourneBoite().size) {
-        if (main.boite.retourneBoite().values.elementAt(element) > 0) {
-            val key = main.boite.retourneBoite().keys.elementAt(element)
+    for (element in 0 until main.config.boite.retourneBoite().size) {
+        if (main.config.boite.retourneBoite().values.elementAt(element) > 0) {
+            val key = main.config.boite.retourneBoite().keys.elementAt(element)
             val playerName = headLink[key] ?: "Notch"
-            val stack: ItemStack = createPlayerHead(playerName, main.boite.retourneBoite().keys.elementAt(element), main.boite.retourneBoite().values.elementAt(element))
+            val stack: ItemStack = createPlayerHead(playerName, main.config.boite.retourneBoite().keys.elementAt(element), main.config.boite.retourneBoite().values.elementAt(element))
             val stackmeta: ItemMeta = stack.itemMeta
-            stackmeta.displayName = main.boite.retourneBoite().keys.elementAt(element)
+            stackmeta.displayName = main.config.boite.retourneBoite().keys.elementAt(element)
             stack.itemMeta = stackmeta
             inv.setItem(count, stack)
 

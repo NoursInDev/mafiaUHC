@@ -12,7 +12,7 @@ import org.noursindev.mafiauhc.ressources.roles.*
 class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
-        val joueur = main.joueurs.find { it.player.name == sender.name }    // recup joueur
+        val joueur = main.config.joueurs.find { it.player.name == sender.name }    // recup joueur
 
         if (args.size > 0) {
             when (args[0]) {
@@ -49,8 +49,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                     if (args.size > 1 && joueur != null && joueur.tour) {
                         when (args[1]) {
                             "pierres" -> {
-                                if (args.size > 2 && main.boite.pierres >= args[2].toInt()) {
-                                    main.boite.pierres -= args[2].toInt()
+                                if (args.size > 2 && main.config.boite.pierres >= args[2].toInt()) {
+                                    main.config.boite.pierres -= args[2].toInt()
                                     joueur.role = Voleur(main)
                                     sender.sendMessage("Vous avez pris ${args[2]} pierres. Vous êtes Voleur.")
                                 } else if (args.size == 2) {
@@ -61,8 +61,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
 
                             "fidele" -> {
-                                if (main.boite.fideles > 0) {
-                                    main.boite.fideles--
+                                if (main.config.boite.fideles > 0) {
+                                    main.config.boite.fideles--
                                     joueur.role = Fidele(main)
                                 } else {
                                     sender.sendMessage("Il n'y a plus de fidèles dans la boite")
@@ -70,8 +70,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
 
                             "agent" -> {
-                                if (main.boite.agents > 0) {
-                                    main.boite.agents--
+                                if (main.config.boite.agents > 0) {
+                                    main.config.boite.agents--
                                     joueur.role = Agent(main)
                                 } else {
                                     sender.sendMessage("Il n'y a plus d'agents dans la boite")
@@ -79,8 +79,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
 
                             "chauffeur" -> {
-                                if (main.boite.chauffeurs > 0) {
-                                    main.boite.chauffeurs--
+                                if (main.config.boite.chauffeurs > 0) {
+                                    main.config.boite.chauffeurs--
                                     joueur.role = Chauffeur(main)
                                 } else {
                                     sender.sendMessage("Il n'y a plus de chauffeurs dans la boite")
@@ -88,8 +88,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
 
                             "nettoyeur" -> {
-                                if (main.boite.nettoyeurs > 0) {
-                                    main.boite.nettoyeurs--
+                                if (main.config.boite.nettoyeurs > 0) {
+                                    main.config.boite.nettoyeurs--
                                     joueur.role = Nettoyeur(main)
                                 } else {
                                     sender.sendMessage("Il n'y a plus de nettoyeurs dans la boite")
@@ -97,7 +97,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
 
                             "enfantdesrues" -> {
-                                if (main.ordre?.lastOrNull() == joueur || main.boite.retourneBoite()
+                                if (main.ordre?.lastOrNull() == joueur || main.config.boite.retourneBoite()
                                         .all { it.value == 0 }
                                 ) {
                                     joueur.role = EnfantDesRues(main)

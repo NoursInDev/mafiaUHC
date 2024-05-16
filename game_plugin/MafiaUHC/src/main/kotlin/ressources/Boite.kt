@@ -26,7 +26,7 @@ class Boite(main : MafiaUHC) {
     }
 
     fun autoConfig() {
-        val nbj : Int = main.joueurs.size
+        val nbj : Int = main.config.joueurs.size
         this.pierres = nbj
         this.agents = nbj / 10 * 2
         this.chauffeurs = nbj / 11 * 2
