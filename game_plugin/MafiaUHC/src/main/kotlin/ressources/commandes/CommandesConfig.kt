@@ -10,117 +10,130 @@ import org.noursindev.mafiauhc.ressources.Starter
 class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (args.isEmpty()) {
-            sender.sendMessage("Usage: /mfc <start|set|rmjoueur|addjoueur|joueurs>")
-            return true
-        }
-        if (args[0] == "joueurs") {
-            sender.sendMessage("Liste des joueurs:")
-            main.joueurs.forEach { sender.sendMessage(it.player.name) }
-            return true
-        }
-        if (args[0] == "phase") {
-            sender.sendMessage("La phase actuelle est ${main.getPhase()}.")
-            return true
-        }
-        if (!sender.isOp || main.getPhase() != Phases.Configuration) {
-            sender.sendMessage("Vous n'êtes pas autorisé à utiliser cette commande maintenant. Vous manquez de permissions ou la partie a déjà commencé.")
-        } else when (args[0]) {
-            "start" -> {
-                run {
-                    val start = Starter(main)
-                    start.runTaskTimer(main, 0, 20)
-                    main.setPhase(Phases.Minage)
-                }
-            }
-            "set" -> {
-                if (args.size < 3) {
-                    sender.sendMessage("Usage: /set <pierres|fideles|agents|chauffeurs|nettoyeurs|parrain> <argument>")
-                } else {
-                    when (args[1]) {
-                        "pierres" -> {
-                            main.boite.pierres = (args[2].toInt())
-                            sender.sendMessage("Le nombre de pierres a été fixé à ${args[2]}.")
-                        }
-                        "fideles" -> {
-                            main.boite.fideles = (args[2].toInt())
-                            sender.sendMessage("Le nombre de fidèles a été fixé à ${args[2]}.")
-                        }
-                        "agents" -> {
-                            main.boite.agents = (args[2].toInt())
-                            sender.sendMessage("Le nombre d'agents a été fixé à ${args[2]}.")
-                        }
-                        "chauffeurs" -> {
-                            main.boite.chauffeurs = (args[2].toInt())
-                            sender.sendMessage("Le nombre de chauffeurs a été fixé à ${args[2]}.")
-                        }
-                        "nettoyeurs" -> {
-                            main.boite.nettoyeurs = (args[2].toInt())
-                            sender.sendMessage("Le nombre de nettoyeurs a été fixé à ${args[2]}.")
-                        }
-                        "parrain" -> {
-                            if (args[2] == "no") {
-                                main.setParrain(null)
-                                sender.sendMessage("Le parrain a été retiré.")
-                                return true
+
+        if (sender.isOp && main.getPhase() == Phases.Configuration) {
+            if (args.isEmpty()) {
+                sender.sendMessage("Vous devez spécifier une action.")
+                return false
+            } else {
+                when (args[0]) {
+                    "joueurs" -> {
+                        sender.sendMessage("Liste des joueurs:")
+                        main.joueurs.forEach { sender.sendMessage(it.player.name) }
+                    }
+
+                    "rmjoueur", "addjoueur" -> {
+                        if (args.size < 2 || main.server.getPlayer(args[1]) == null) {
+                            sender.sendMessage("Usage: /mfc ${args[0]} <pseudo>\nLe joueur doit être connecté.")
+                        } else {
+                            if (main.joueurs.find { it.player.name == args[1] } != null) {
+                                if (args[0] == "rmjoueur") {
+                                    main.joueurs.remove(main.joueurs.find { it.player.name == args[1] }!!)
+                                    sender.sendMessage("Le joueur ${args[1]} a été retiré de la partie.")
+                                } else {
+                                    sender.sendMessage("Le joueur ${args[1]} est déjà dans la partie.")
+                                }
+                            } else {
+                                if (args[0] == "addjoueur") {
+                                    main.joueurs.add(main.joueurs.find { it.player.name == args[1] }!!)
+                                    sender.sendMessage("Le joueur ${args[1]} a été ajouté à la partie.")
+                                } else {
+                                    sender.sendMessage("Le joueur ${args[1]} n'est pas dans la partie.")
+                                }
+
                             }
-                            if (args[2] == "rd") {
-                                main.setRandomParrain()
-                                sender.sendMessage("Le parrain a été fixé aléatoirement.")
-                                return true
+                        }
+                    }
+
+                    "boite" -> {
+                        sender.sendMessage("Boite de la partie:")
+                        main.boite.retourneBoite().forEach { (k, v) -> sender.sendMessage("$k: $v") }
+                    }
+
+                    "autoconfig" -> {
+                        main.boite.autoConfig()
+                        sender.sendMessage("La boite a été automatiquement configurée.")
+                    }
+
+                    "set" -> {
+
+                        /* Def Parrain /mfc set parrain <pseudo>
+                        *   random : /mfc set parrain rd
+                        *   null (DEV ONLY): /mfc set parrain no  => VERSION FINALE DEVIENT /mfc set parrain nom = donne nom parrain.
+                        *   normal : /mfc set parrain <pseudo> ou <pseudo> est un joueur connecté et dans la partie
+                        */
+
+                        if (args[1] == "parrain" && (args[2] == "no" || args[2] == "rd" || (main.server.getPlayer(args[2]) != null && main.joueurs.find { it.player.name == args[2] } != null))) {
+                            when (args[2]) {
+                                "no" -> {
+                                    main.setParrain(null)
+                                    sender.sendMessage("Le parrain a été retiré.")
+                                }
+
+                                "rd" -> {
+                                    main.setRandomParrain()
+                                    sender.sendMessage("Le parrain a été fixé aléatoirement.")
+                                }
+
+                                else -> {
+                                    main.setParrain(main.joueurs.find { it.player.name == args[2] })
+                                    sender.sendMessage("Le parrain a été fixé à ${args[2]}.")
+                                }
                             }
-                            main.setParrain(main.joueurs.find { it.player.name == args[2] }!!)
-                            sender.sendMessage("Le parrain a été fixé à ${args[2]}.")
+                            return true
                         }
-                        else -> {
-                            sender.sendMessage("Usage: /set <pierres|fideles|agents|chauffeurs|nettoyeurs|parrain> <argument>")
+                        if (args.size > 2 && args[2].toIntOrNull() != null) {
+                            val argument: Int = args[2].toInt()
+                            when (args[1]) {
+                                "pierres" -> {
+                                    main.boite.pierres = argument
+                                    sender.sendMessage("Le nombre de pierres a été fixé à $argument.")
+                                }
+
+                                "fideles" -> {
+                                    main.boite.fideles = argument
+                                    sender.sendMessage("Le nombre de fidèles a été fixé à $argument.")
+                                }
+
+                                "agents" -> {
+                                    main.boite.agents = argument
+                                    sender.sendMessage("Le nombre d'agents a été fixé à $argument.")
+                                }
+
+                                "chauffeurs" -> {
+                                    main.boite.chauffeurs = argument
+                                    sender.sendMessage("Le nombre de chauffeurs a été fixé à $argument.")
+                                }
+
+                                "nettoyeurs" -> {
+                                    main.boite.nettoyeurs = argument
+                                    sender.sendMessage("Le nombre de nettoyeurs a été fixé à $argument.")
+                                }
+
+                                else -> {
+                                    sender.sendMessage("Usage: /mfc set <pierres|fideles|agents|chauffeurs|nettoyeurs|parrain> <argument>")
+                                }
+                            }
+                        } else {
+                            sender.sendMessage("Vous n'avez pas entré assez d'arguments !")
                         }
                     }
-                }
-            }
 
-            "rmjoueur" -> {
-                if (args.size < 2) {
-                    sender.sendMessage("Usage: /rmjoueur <pseudo>")
-                } else {
-                    if (main.joueurs.size == 0) {
-                        sender.sendMessage("Il n'y a pas de joueur dans la partie.")
-                    } else if (main.server.getPlayer(args[1]) == null) {
-                        sender.sendMessage("Le joueur ${args[1]} n'est pas connecté.")
-                    } else if (main.joueurs.find { it.player.name == args[1] } == null) {
-                        sender.sendMessage("Le joueur ${args[1]} n'est pas dans la partie.")
-                    } else {
-                        main.joueurs.remove(main.joueurs.find { it.player.name == args[1] }!!)
-                        sender.sendMessage("Le joueur ${args[1]} a été retiré de la partie.")
+                    "start" -> {
+                        run {
+                            val start = Starter(main)
+                            start.runTaskTimer(main, 0, 20)
+                            main.setPhase(Phases.Minage)
+                        }
+                    }
+
+                    else -> {
+                        sender.sendMessage("Usage: /mfc <start|set|rmjoueur|addjoueur|joueurs>")
                     }
                 }
             }
-
-            "addjoueur" -> {
-                if (args.size < 2) {
-                    sender.sendMessage("Usage: /addjoueur <pseudo>")
-                } else {
-                    if (main.joueurs.size == 0) {
-                        sender.sendMessage("Il n'y a pas de joueur dans la partie.")
-                    } else if (main.server.getPlayer(args[1]) == null) {
-                        sender.sendMessage("Le joueur ${args[1]} n'est pas connecté.")
-                    } else if (main.joueurs.find { it.player.name == args[1] } != null) {
-                        sender.sendMessage("Le joueur ${args[1]} est déjà dans la partie.")
-                    } else {
-                        main.joueurs.add(main.joueurs.find { it.player.name == args[1] }!!)
-                        sender.sendMessage("Le joueur ${args[1]} a été ajouté à la partie.")
-                    }
-                }
-            }
-
-            "joueurs" -> {
-                sender.sendMessage("Liste des joueurs:")
-                main.joueurs.forEach { sender.sendMessage(it.player.name) }
-            }
-
-            else -> {
-                sender.sendMessage("Usage: /mfc <start|set|rmjoueur|addjoueur|joueurs>")
-            }
+        } else {
+            sender.sendMessage("Vous n'êtes pas autorisé à configurer la partie. Vous manquez de permissions ou la partie a déjà commencé.")
         }
         return true
     }

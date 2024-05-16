@@ -26,7 +26,7 @@ fun boiteInvConstruct(main: MafiaUHC): Inventory {
         }
     }
 
-    val enfantdesrues: ItemStack = ItemStack(Material.STONE, -1)
+    val enfantdesrues: ItemStack = createPlayerHead(headLink["enfants des rues"] ?: "Notch", "enfants des rues", 1)
     val edrmeta: ItemMeta = enfantdesrues.itemMeta
     edrmeta.displayName = "enfants des rues"
     enfantdesrues.itemMeta = edrmeta
