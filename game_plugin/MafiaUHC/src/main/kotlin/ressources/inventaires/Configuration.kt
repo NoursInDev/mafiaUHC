@@ -130,5 +130,21 @@ fun borduresConfigConstructeur(config : Configuration): Inventory {
 
 fun lancementConfigConstructeur(): Inventory {
     val inventaire: Inventory = Bukkit.createInventory(null, 9, "§dLancer la partie")
+
+    val lancer = ItemStack(Material.EMERALD_BLOCK, 1)
+    val stop = ItemStack(Material.REDSTONE_BLOCK, 1)
+
+    val lancermeta = lancer.itemMeta
+    val stopmeta = stop.itemMeta
+
+    lancermeta.displayName = "§aLancer"
+    stopmeta.displayName = "§aAnnuler"
+
+    lancer.itemMeta = lancermeta
+    stop.itemMeta = stopmeta
+
+    inventaire.setItem(4, lancer)
+    inventaire.setItem(8, stop)
+
     return inventaire
 }

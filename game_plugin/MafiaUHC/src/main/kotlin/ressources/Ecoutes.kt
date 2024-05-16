@@ -17,7 +17,7 @@ import org.noursindev.mafiauhc.ressources.inventaires.*
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
 
-    val configurateur = nouvelOpener()
+    private val configurateur = nouvelOpener()
 
     @EventHandler
     fun arriveeJoueur(event: PlayerJoinEvent) {
@@ -277,6 +277,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("TF") -> {
                             if (main.config.bordure[1] > 10 && main.config.bordure[1] > main.config.bordure[0] + 10) {
                                 main.config.bordure[1] -= 10
@@ -284,6 +285,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("DD") -> {
                             if (main.config.bordure[2] >= 10 && main.config.bordure[2] > main.config.bordure[3]) {
                                 main.config.bordure[2] -= 10
@@ -291,6 +293,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("DF") -> {
                             if (main.config.bordure[3] >= 10 && main.config.bordure[3] <= main.config.bordure[2]) {
                                 main.config.bordure[3] -= 10
@@ -298,6 +301,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("DAM") -> {
                             if (main.config.bordure[4] > 0) {
                                 main.config.bordure[4]--
@@ -305,9 +309,11 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         else -> {}
                     }
                 }
+
                 ClickType.RIGHT -> {
                     when (item.itemMeta.lore) {
                         mutableListOf("TD") -> {
@@ -317,6 +323,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("TF") -> {
                             if (main.config.bordure[1] > main.config.bordure[0]) {
                                 main.config.bordure[1] += 10
@@ -324,6 +331,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("DD") -> {
                             if (main.config.bordure[2] < 2000000) {
                                 main.config.bordure[2] += 10
@@ -331,6 +339,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("DF") -> {
                             if (main.config.bordure[3] < main.config.bordure[2]) {
                                 main.config.bordure[3] += 10
@@ -338,17 +347,37 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                 item.itemMeta = itemmeta
                             }
                         }
+
                         mutableListOf("DAM") -> {
                             main.config.bordure[4]++
                             itemmeta.displayName = "§dDégâts / seconde: ${config.bordure[4]}"
                             item.itemMeta = itemmeta
                         }
+
                         else -> {}
                     }
                 }
+
                 else -> {}
             }
 
+        }
+
+        if (inv.name == "§dLancer la partie") {
+            event.isCancelled = true
+            when (item.itemMeta.displayName) {
+                "§aLancer" -> {
+                    player.closeInventory()
+                    player.performCommand("mfc start")
+                }
+
+                "§aAnnuler" -> {
+                    player.closeInventory()
+                    player.openInventory(configInvConstructeur())
+                }
+
+                else -> {}
+            }
         }
 
     }
