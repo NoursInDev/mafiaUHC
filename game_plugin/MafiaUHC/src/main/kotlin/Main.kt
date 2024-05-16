@@ -12,7 +12,7 @@ import org.noursindev.mafiauhc.ressources.commandes.CommandesIG
 
 class MafiaUHC : JavaPlugin() {
 
-    var config : Configuration = Configuration(mutableSetOf(), Boite(this))
+    lateinit var config: Configuration
     private var phase: Phases = Phases.Configuration
     var ordre: Array<Joueur>? = null
     var parrain: Joueur? = null
@@ -24,6 +24,8 @@ class MafiaUHC : JavaPlugin() {
         val world = server.worlds[0]
         world.setGameRuleValue("naturalRegeneration", "false")
         world.setGameRuleValue("deathMessages", "false")
+
+        config = Configuration(mutableSetOf(), Boite(this))
 
         setPhase(Phases.Configuration)
 
@@ -45,10 +47,6 @@ class MafiaUHC : JavaPlugin() {
     fun getPhase(): Phases {
         return phase
     }
-
-
-
-
 
     fun lancePartie() {
         run {

@@ -12,7 +12,6 @@ class Boite(main : MafiaUHC) {
 
     init {
         this.main = main
-        autoConfig()
     }
 
     fun retourneBoite() : Map<String, Int> {

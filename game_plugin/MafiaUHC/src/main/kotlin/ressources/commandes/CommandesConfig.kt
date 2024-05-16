@@ -15,6 +15,7 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
         if (sender.isOp && main.getPhase() == Phases.Configuration) {
             if (args.isEmpty()) {
+
                 sender.sendMessage("Vous devez spécifier une action.")
                 return false
             } else {

@@ -7,10 +7,12 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.resources.Joueur
+import org.noursindev.mafiauhc.ressources.inventaires.configInvConstructeur
 import org.noursindev.mafiauhc.ressources.inventaires.nouvelOpener
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
@@ -51,22 +53,30 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         }
     }
 
+    fun itemUtil(event: PlayerInteractEvent) {
+        val item = event.item
+        if (item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags) {
+            event.isCancelled = true
+            event.player.openInventory(configInvConstructeur())
+        }
+    }
+
     @EventHandler
     fun onClick(event: InventoryClickEvent) {
         val inv = event.inventory
         println("OnClick : ${inv.name}")
         val joueur = main.config.joueurs.find { it.player.name == event.whoClicked.name }
-        if (joueur != null) {
-            println("Joueur : ${joueur.player.name}")
-        } else {
-            println("Joueur : null")
-        }
+
         val item = event.currentItem
+
+        // PROBLEM CHECK
 
         if (inv == null || inv.name == null || item == null || joueur == null) {
             println("onClick Problem : $inv, ${inv.name}, $item, $joueur")
             return
         }
+
+        // INGAME CHECK
 
         if (inv.name == "§dBoite de Cigares") {
             event.isCancelled = true
@@ -137,6 +147,12 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     joueur.player.closeInventory()
                 }
             }
+        }
+
+        // CONFIG CHECK
+
+        if (inv.name == "§dConfiguration") {
+            event.isCancelled = true
         }
 
     }
