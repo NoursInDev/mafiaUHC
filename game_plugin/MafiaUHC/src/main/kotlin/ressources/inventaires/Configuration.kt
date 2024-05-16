@@ -5,9 +5,12 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.ItemMeta
+import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.Boite
 import org.noursindev.mafiauhc.ressources.Configuration
+import org.noursindev.mafiauhc.ressources.roles.Parrain
 
 fun configInvConstructeur(): Inventory {
     val inventaire: Inventory = Bukkit.createInventory(null, 5 * 9, "§dConfiguration")
@@ -73,11 +76,73 @@ fun rolesConfigInvConstructeur(boite: Boite): Inventory {
         count--
     }
 
+    val retour = ItemStack(Material.ARROW, 1)
+    val retourmeta = retour.itemMeta
+    retourmeta.displayName = "§aRetour"
+    retour.itemMeta = retourmeta
+
+    inventaire.setItem(0, retour)
+
     return inventaire
 }
 
-fun joueursConfigConstructeur(): Inventory {
+fun joueursConfigConstructeur(numpage : Int, joueurs : Array<Player>, liste : MutableSet<Joueur>): Inventory {
     val inventaire: Inventory = Bukkit.createInventory(null, 6 * 9, "§aJoueurs")
+    for (i in numpage * 45 until (numpage + 1) * 45) {
+        if (i < joueurs.size) {
+            val joueur = joueurs.elementAt(i)
+            val stack: ItemStack = createPlayerHead(joueur.name, joueur.name, 1)
+            val stackmeta: ItemMeta = stack.itemMeta
+
+            if (liste.find { it.player.name == joueur.name } != null) {
+                println("valide meta dans")
+                stackmeta.lore = mutableListOf("§aJoueur dans la partie.")
+                if (liste.find { it.player.name == joueur.name }?.role is Parrain) {
+                    stackmeta.lore = mutableListOf("§eParrain actuellement définit.")
+                }
+            } else {
+                stackmeta.lore = mutableListOf("§cJoueur hors partie.")
+            }
+            println("meta : ${stackmeta.lore}")
+            stack.itemMeta = stackmeta
+            println(stack.itemMeta.lore)
+            inventaire.addItem(stack)
+        } else {
+            break
+        }
+    }
+
+    val page = ItemStack(Material.PAPER, numpage + 1)
+    val pagemeta = page.itemMeta
+    pagemeta.displayName = "§aPage ${numpage + 1}"
+    page.itemMeta = pagemeta
+
+    val totalpage = ItemStack(Material.PAPER, joueurs.size / 45 + 1)
+    val totalpagemeta = totalpage.itemMeta
+    totalpagemeta.displayName = "§aTotal de pages : ${joueurs.size / 45 + 1}"
+    totalpage.itemMeta = totalpagemeta
+
+    val retour = ItemStack(Material.ARROW, 1)
+    val retourmeta = retour.itemMeta
+    retourmeta.displayName = "§aRetour"
+    retour.itemMeta = retourmeta
+
+    val suivant = ItemStack(Material.WATER_BUCKET, 1)
+    val suivantmeta = suivant.itemMeta
+    suivantmeta.displayName = "§aSuivant"
+    suivant.itemMeta = suivantmeta
+
+    val precedent = ItemStack(Material.LAVA_BUCKET, 1)
+    val precedentmeta = precedent.itemMeta
+    precedentmeta.displayName = "§aPrécédent"
+    precedent.itemMeta = precedentmeta
+
+    inventaire.setItem(45, page)
+    inventaire.setItem(53, totalpage)
+    inventaire.setItem(49, retour)
+    inventaire.setItem(50, suivant)
+    inventaire.setItem(48, precedent)
+
     return inventaire
 }
 
@@ -125,6 +190,13 @@ fun borduresConfigConstructeur(config : Configuration): Inventory {
     inventaire.setItem(15, dd)
     inventaire.setItem(16, df)
 
+    val retour = ItemStack(Material.ARROW, 1)
+    val retourmeta = retour.itemMeta
+    retourmeta.displayName = "§aRetour"
+    retour.itemMeta = retourmeta
+
+    inventaire.setItem(18, retour)
+
     return inventaire
 }
 
@@ -145,6 +217,40 @@ fun lancementConfigConstructeur(): Inventory {
 
     inventaire.setItem(4, lancer)
     inventaire.setItem(8, stop)
+
+    return inventaire
+}
+
+fun stuffShowroomConstructeur() : Inventory {
+    val inventaire: Inventory = Bukkit.createInventory(null, 3 * 9, "§dStuffs")
+
+    val retour = ItemStack(Material.ARROW, 1)
+    val retourmeta = retour.itemMeta
+    retourmeta.displayName = "§aRetour"
+    retour.itemMeta = retourmeta
+
+    inventaire.setItem(26, retour)
+
+    inventaire.addItem(ItemStack(Material.APPLE, 64)) // 64 apples
+    inventaire.addItem(ItemStack(Material.BOOK, 7)) // 7 books
+    inventaire.addItem(ItemStack(Material.GOLDEN_CARROT, 64)) // 64 golden carrots
+    inventaire.addItem(ItemStack(Material.LOG, 64)) // 64 oak logs
+
+    val pickaxe = ItemStack(Material.IRON_PICKAXE)
+    pickaxe.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DIG_SPEED, 2) // Efficiency II
+    pickaxe.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 3) // Unbreaking III
+
+    val axe = ItemStack(Material.IRON_AXE)
+    axe.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DIG_SPEED, 2) // Efficiency II
+    axe.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 3) // Unbreaking III
+
+    val shovel = ItemStack(Material.IRON_SPADE)
+    shovel.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DIG_SPEED, 2) // Efficiency II
+    shovel.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 3) // Unbreaking III
+
+    inventaire.addItem(pickaxe)
+    inventaire.addItem(axe)
+    inventaire.addItem(shovel)
 
     return inventaire
 }

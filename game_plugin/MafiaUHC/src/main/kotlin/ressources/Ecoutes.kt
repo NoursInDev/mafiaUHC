@@ -2,6 +2,7 @@ package org.noursindev.mafiauhc.ressources
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -11,9 +12,12 @@ import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.inventaires.*
+import org.noursindev.mafiauhc.ressources.roles.Parrain
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
 
@@ -158,7 +162,13 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
             when (item.itemMeta.displayName) {
                 "§aJoueurs" -> {
                     player.closeInventory()
-                    player.openInventory(joueursConfigConstructeur())
+                    player.openInventory(
+                        joueursConfigConstructeur(
+                            0,
+                            main.server.onlinePlayers.toTypedArray(),
+                            main.config.joueurs
+                        )
+                    )
                 }
 
                 "§9Roles" -> {
@@ -178,6 +188,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
                 "§dStuffs" -> {
                     player.closeInventory()
+                    player.openInventory(stuffShowroomConstructeur())
                 }
 
                 else -> {
@@ -189,7 +200,10 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
         if (inv.name == "§9Roles") {
             event.isCancelled = true
-            when (event.click) {
+            if (itemmeta.displayName == "§aRetour") {
+                player.closeInventory()
+                player.openInventory(configInvConstructeur())
+            } else when (event.click) {
                 ClickType.LEFT -> {
                     when (item.itemMeta.displayName) {
                         "pierres" -> {
@@ -267,7 +281,10 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         if (inv.name == "§dBordures") {
             val config = main.config
             event.isCancelled = true
-            when (event.click) {
+            if (itemmeta.displayName == "§aRetour") {
+                player.closeInventory()
+                player.openInventory(configInvConstructeur())
+            } else when (event.click) {
                 ClickType.LEFT -> {
                     when (item.itemMeta.lore) {
                         mutableListOf("TD") -> {
@@ -380,5 +397,85 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
             }
         }
 
+        if (inv.name == "§aJoueurs") {
+            event.isCancelled = true
+            when (item.itemMeta.displayName) {
+                "§aRetour" -> {
+                    player.closeInventory()
+                    player.openInventory(configInvConstructeur())
+                }
+
+                "§aPrécédent" -> {
+                    if (event.inventory.contents[45].amount > 1) { // contents amout est numpage +1 !!!
+                        player.closeInventory()
+                        player.openInventory(
+                            joueursConfigConstructeur(
+                                event.inventory.contents[45].amount - 1,
+                                main.server.onlinePlayers.toTypedArray(),
+                                main.config.joueurs
+                            )
+                        )
+                    }
+                }
+
+                "§aSuivant" -> {
+                    if (event.inventory.contents[45].amount < event.inventory.contents[53].amount) {
+                        player.closeInventory()
+                        player.openInventory(
+                            joueursConfigConstructeur(
+                                event.inventory.contents[45].amount + 1,
+                                main.server.onlinePlayers.toTypedArray(),
+                                main.config.joueurs
+                            )
+                        )
+                    }
+                }
+
+                else -> {
+                    if (item.type == Material.SKULL_ITEM) {
+                        itemmeta.lore = mutableListOf()
+                        val pseudo = item.itemMeta.displayName
+                        when (event.click) {
+                            ClickType.LEFT -> {
+
+                                if (main.config.joueurs.find { it.player.name == pseudo } != null) {
+                                    (event.whoClicked as CraftPlayer).performCommand("mfc rmjoueur ${main.config.joueurs.find { it.player.name == pseudo }?.player?.name}")
+                                    itemmeta.lore = mutableListOf("§cJoueur hors partie.")
+                                } else {
+                                    (event.whoClicked as CraftPlayer).performCommand("mfc addjoueur $pseudo")
+                                    itemmeta.lore = mutableListOf("§aJoueur dans la partie.")
+                                }
+                            }
+
+                            ClickType.RIGHT -> {
+
+                                if (main.config.joueurs.find { it.player.name == pseudo } == null) {
+                                    (event.whoClicked as CraftPlayer).performCommand("mfc addjoueur $pseudo")
+                                }
+
+                                (event.whoClicked as CraftPlayer).performCommand("mfc set parrain $pseudo")
+                                itemmeta.lore = mutableListOf("§eParrain actuellement définit.")
+                            }
+
+                            else -> {}
+                        }
+                    }
+                }
+            }
+        }
+
+        if (inv.name == "§dStuffs") {
+            event.isCancelled = true
+            when (item.itemMeta.displayName) {
+                "§aRetour" -> {
+                    player.closeInventory()
+                    player.openInventory(configInvConstructeur())
+                }
+
+                else -> {}
+            }
+        }
+
+        item.itemMeta = itemmeta
     }
 }

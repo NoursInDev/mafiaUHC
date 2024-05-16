@@ -71,7 +71,9 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                         if (args[1] == "parrain" && (args[2] == "no" || args[2] == "rd" || (main.server.getPlayer(args[2]) != null && main.config.joueurs.find { it.player.name == args[2] } != null))) {
                             when (args[2]) {
                                 "no" -> {
-                                    main.config.updateParrain(null)
+                                    if (main.config.parrain != null) {
+                                        main.config.parrain = null
+                                    }
                                     sender.sendMessage("Le parrain a été retiré.")
                                 }
 
@@ -81,8 +83,7 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                                 }
 
                                 else -> {
-                                    main.config.updateParrain(main.config.joueurs.find { it.player.name == args[2] })
-                                    sender.sendMessage("Le parrain a été fixé à ${args[2]}.")
+                                    main.config.parrain = main.config.joueurs.find { it.player.name == args[2] }
                                 }
                             }
                             return true
