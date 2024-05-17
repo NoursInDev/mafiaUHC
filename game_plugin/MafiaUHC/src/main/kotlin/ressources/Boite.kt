@@ -2,17 +2,12 @@ package org.noursindev.mafiauhc.ressources
 
 import org.noursindev.mafiauhc.MafiaUHC
 
-class Boite(main : MafiaUHC) {
+class Boite(val main: MafiaUHC) {
     var pierres: Int = 1
     var fideles: Int = 0
     var agents: Int = 0
     var chauffeurs: Int = 0
     var nettoyeurs: Int = 0
-    val main: MafiaUHC
-
-    init {
-        this.main = main
-    }
 
     fun retourneBoite() : Map<String, Int> {
         val boite = mutableMapOf<String, Int>()

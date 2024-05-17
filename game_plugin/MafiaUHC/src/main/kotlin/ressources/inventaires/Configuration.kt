@@ -1,13 +1,12 @@
 package org.noursindev.mafiauhc.ressources.inventaires
 
-import net.minecraft.server.v1_8_R3.Enchantment
 import org.bukkit.inventory.Inventory
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.ItemMeta
-import org.noursindev.mafiauhc.resources.Joueur
+import org.noursindev.mafiauhc.ressources.Joueur
 import org.noursindev.mafiauhc.ressources.Boite
 import org.noursindev.mafiauhc.ressources.Configuration
 import org.noursindev.mafiauhc.ressources.roles.Parrain

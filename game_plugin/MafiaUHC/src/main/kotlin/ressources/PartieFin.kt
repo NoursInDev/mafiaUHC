@@ -3,7 +3,6 @@ package org.noursindev.mafiauhc.ressources
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.noursindev.mafiauhc.MafiaUHC
-import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.roles.Parrain
 import org.noursindev.mafiauhc.ressources.roles.RoleSuper
 import org.noursindev.mafiauhc.ressources.roles.Voleur

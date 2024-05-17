@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.noursindev.mafiauhc.MafiaUHC
-import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.inventaires.*
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
@@ -488,7 +487,8 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 if (tueur?.role != null) {
                     tueur.role!!.pierres += joueur.role!!.pierres
                 } else {
-                    main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
+                    main.config.parrain?.role?.pierres =
+                        main.config.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
                 }
                 joueur.role!!.pierres = 0
                 checkFin(main, event)

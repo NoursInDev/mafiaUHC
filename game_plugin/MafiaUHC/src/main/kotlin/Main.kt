@@ -1,10 +1,8 @@
 package org.noursindev.mafiauhc
 
-import org.bukkit.Bukkit
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
-import org.noursindev.mafiauhc.resources.Joueur
+import org.noursindev.mafiauhc.ressources.Joueur
 import org.noursindev.mafiauhc.ressources.*
 import org.noursindev.mafiauhc.ressources.commandes.CommandesConfig
 import org.noursindev.mafiauhc.ressources.commandes.CommandesIG
@@ -30,8 +28,8 @@ class MafiaUHC : JavaPlugin() {
         val pm: PluginManager = server.pluginManager
         pm.registerEvents(Ecoutes(this), this)
 
-        this.getCommand("mfc").setExecutor(CommandesConfig(this))
-        this.getCommand("mf").setExecutor(CommandesIG(this))
+        this.getCommand("mfc").executor = CommandesConfig(this)
+        this.getCommand("mf").executor = CommandesIG(this)
     }
 
     override fun onDisable() {

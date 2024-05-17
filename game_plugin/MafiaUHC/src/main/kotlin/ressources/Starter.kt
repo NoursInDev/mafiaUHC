@@ -18,7 +18,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         if(timer == 0) {
             Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
             val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
-            main.config.joueurs.forEach() {
+            main.config.joueurs.forEach {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
                 donneStuff(it.player)
                 if (main.config.parrain != null && it == main.config.parrain) {
@@ -36,7 +36,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
-            main.config.joueurs.forEach() {
+            main.config.joueurs.forEach {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 1.0f)
                 it.player.level = timer
             }
@@ -50,7 +50,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         timer--
     }
 
-    fun donneStuff(player: Player) {
+    private fun donneStuff(player: Player) {
         player.inventory.clear()
         player.level = 0
         player.health = 20.0
@@ -78,7 +78,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         player.inventory.addItem(shovel)
     }
 
-    fun teleport(players : MutableSet<CraftPlayer>) {
+    private fun teleport(players : MutableSet<CraftPlayer>) {
         for (p in players) {
             var x: Int
             var z: Int

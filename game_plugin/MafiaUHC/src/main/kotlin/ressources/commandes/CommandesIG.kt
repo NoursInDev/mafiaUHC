@@ -3,7 +3,6 @@ package org.noursindev.mafiauhc.ressources.commandes
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import org.bukkit.inventory.Inventory
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.inventaires.boiteInvConstruct
 import org.noursindev.mafiauhc.ressources.inventaires.pierresInvConstruct
@@ -14,7 +13,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
 
         val joueur = main.config.joueurs.find { it.player.name == sender.name }    // recup joueur
 
-        if (args.size > 0) {
+        if (args.isNotEmpty()) {
             when (args[0]) {
                 "ordre" -> {
                     sender.sendMessage("Ordre des joueurs:")

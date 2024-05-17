@@ -5,7 +5,6 @@ import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.scheduler.BukkitRunnable
 import org.noursindev.mafiauhc.MafiaUHC
 import org.bukkit.Bukkit
-import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.roles.*
 
 class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {

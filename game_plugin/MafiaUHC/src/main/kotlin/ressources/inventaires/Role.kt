@@ -1,14 +1,13 @@
 package org.noursindev.mafiauhc.ressources.inventaires
 
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.noursindev.mafiauhc.MafiaUHC
 
 fun boiteInvConstruct(main: MafiaUHC): Inventory {
-    var inv: Inventory = Bukkit.createInventory(null, 18, "§dBoite de Cigares")
+    val inv: Inventory = Bukkit.createInventory(null, 18, "§dBoite de Cigares")
     var count = inv.size - 1
 
     for (element in 0 until main.config.boite.retourneBoite().size) {

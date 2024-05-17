@@ -9,7 +9,7 @@ import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.Phases
 import org.noursindev.mafiauhc.ressources.Starter
 import org.noursindev.mafiauhc.ressources.inventaires.nouvelOpener
-import org.noursindev.mafiauhc.resources.Joueur
+import org.noursindev.mafiauhc.ressources.Joueur
 
 class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
 
