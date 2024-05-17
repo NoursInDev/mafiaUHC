@@ -6,6 +6,7 @@ import org.noursindev.mafiauhc.resources.Joueur
 class Configuration(joueurs : MutableSet<Joueur>, boite : Boite) {
     var joueurs : MutableSet<Joueur>
     var boite : Boite
+    var initialBoite : Boite? = null
     var bordure : Array<Int>
     var parrain : Joueur? = null
 
