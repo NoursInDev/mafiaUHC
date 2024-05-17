@@ -491,6 +491,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     main.parrain?.role?.pierres = main.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
                 }
                 joueur.role!!.pierres = 0
+                checkFin(main, event)
             }
         }
 
