@@ -6,18 +6,16 @@ import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.inventaires.*
-import org.noursindev.mafiauhc.ressources.roles.Parrain
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
 
@@ -89,35 +87,35 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
             when (item.itemMeta.displayName) {
                 "pierres" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre pierres") })
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre pierres") }
                 }
 
                 "fideles" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre fidele") })
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre fidele") }
                 }
 
                 "agents" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf prendre agent") })
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre agent") }
                 }
 
                 "chauffeurs" -> {
                     joueur.player.closeInventory()
                     Bukkit.getScheduler()
-                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre chauffeur") })
+                        .runTask(main) { joueur.player.performCommand("mf prendre chauffeur") }
                 }
 
                 "nettoyeurs" -> {
                     joueur.player.closeInventory()
                     Bukkit.getScheduler()
-                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre nettoyeur") })
+                        .runTask(main) { joueur.player.performCommand("mf prendre nettoyeur") }
                 }
 
                 "enfants des rues" -> {
                     joueur.player.closeInventory()
                     Bukkit.getScheduler()
-                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre enfantdesrues") })
+                        .runTask(main) { joueur.player.performCommand("mf prendre enfantdesrues") }
 
                 }
             }
@@ -144,12 +142,12 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
                 "Annuler" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler().runTask(main, Runnable { joueur.player.performCommand("mf ouvrir") })
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf ouvrir") }
                 }
 
                 "Valider" -> {
                     Bukkit.getScheduler()
-                        .runTask(main, Runnable { joueur.player.performCommand("mf prendre pierres $count") })
+                        .runTask(main) { joueur.player.performCommand("mf prendre pierres $count") }
                     joueur.player.closeInventory()
                 }
             }
@@ -477,5 +475,24 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         }
 
         item.itemMeta = itemmeta
+    }
+
+    @EventHandler
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        val joueur = main.config.joueurs.find { it.player == event.entity }
+        if (joueur != null) {
+            if (main.getPhase() == Phases.Active && joueur.role != null) {
+                val tueur = main.config.joueurs.find { it.player == event.entity.killer }
+                event.deathMessage = "§e${event.entity.name}§a est mort."
+                joueur.player.gameMode = org.bukkit.GameMode.SPECTATOR
+                if (tueur?.role != null) {
+                    tueur.role!!.pierres += joueur.role!!.pierres
+                } else {
+                    main.parrain?.role?.pierres = main.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
+                }
+                joueur.role!!.pierres = 0
+            }
+        }
+
     }
 }

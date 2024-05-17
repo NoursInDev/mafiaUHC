@@ -5,7 +5,6 @@ import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.scheduler.BukkitRunnable
 import org.noursindev.mafiauhc.MafiaUHC
 import org.bukkit.Bukkit
-import org.bukkit.inventory.Inventory
 import org.noursindev.mafiauhc.resources.Joueur
 import org.noursindev.mafiauhc.ressources.roles.*
 
@@ -17,13 +16,16 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
                 println("Tour de la boite.")
                 lancerTours()
             }
+            60 -> {
+                main.setPhase(Phases.Active)
+            }
         }
         time++
     }
 
     private fun lancerTours() {
-        var go: Boolean = true
-        while (main.ordre!!.any() { it.role == null }) {
+        var go = true
+        while (main.ordre!!.any { it.role == null }) {
             if (!go) break
             go = false
             val joueur = main.ordre!!.first { it.role == null }
@@ -34,7 +36,7 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
 
             joueur.player.spigot().sendMessage(message)
 
-            Bukkit.getScheduler().runTaskLater(main, Runnable {
+            Bukkit.getScheduler().runTaskLater(main, {
                 if (joueur.role == null) {
                     roleAttribution(joueur)
                     joueur.player.closeInventory()
