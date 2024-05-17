@@ -21,10 +21,10 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             main.config.joueurs.forEach() {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
                 donneStuff(it.player)
-                if (main.parrain != null && it == main.parrain) {
+                if (main.config.parrain != null && it == main.config.parrain) {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
                 } else {
-                    it.player.sendMessage("Le Parrain de cette partie est ${main.parrain?.player?.name}.")
+                    it.player.sendMessage("Le Parrain de cette partie est ${main.config.parrain?.player?.name}.")
                 }
                 playerlist.add(it.player)
                 it.player.gameMode = org.bukkit.GameMode.SURVIVAL
@@ -32,7 +32,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                 main.lancePartie()
             }
             main.ordre = main.config.joueurs.shuffled().toTypedArray()
-            main.ordre = main.ordre?.filterNot { it == main.parrain }?.toTypedArray()
+            main.ordre = main.ordre?.filterNot { it == main.config.parrain }?.toTypedArray()
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")

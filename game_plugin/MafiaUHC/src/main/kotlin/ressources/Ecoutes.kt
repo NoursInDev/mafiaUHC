@@ -488,7 +488,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 if (tueur?.role != null) {
                     tueur.role!!.pierres += joueur.role!!.pierres
                 } else {
-                    main.parrain?.role?.pierres = main.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
+                    main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
                 }
                 joueur.role!!.pierres = 0
                 checkFin(main, event)

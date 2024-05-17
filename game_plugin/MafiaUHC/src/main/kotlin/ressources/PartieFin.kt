@@ -18,7 +18,7 @@ fun checkFin(main: MafiaUHC, event: PlayerDeathEvent) {
         }
 
         // Condition de Victoire Fidèles
-        if (main.parrain!!.role!!.pierres == main.config.initialBoite?.pierres) {
+        if (main.config.parrain!!.role!!.pierres == main.config.initialBoite?.pierres) {
             finPartie(main, Parrain(main))
         }
     }
