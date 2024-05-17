@@ -480,6 +480,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     fun onPlayerDeath(event: PlayerDeathEvent) {
         val joueur = main.config.joueurs.find { it.player == event.entity }
         if (joueur != null) {
+            joueur.vivant = false
             if (main.getPhase() == Phases.Active && joueur.role != null) {
                 val tueur = main.config.joueurs.find { it.player == event.entity.killer }
                 event.deathMessage = "§e${event.entity.name}§a est mort."
