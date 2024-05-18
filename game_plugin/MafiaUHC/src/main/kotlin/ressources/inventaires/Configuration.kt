@@ -95,7 +95,6 @@ fun joueursConfigConstructeur(main : MafiaUHC, numpage : Int, joueurs : Array<Pl
             val stackmeta: ItemMeta = stack.itemMeta
 
             if (liste.find { it.player.name == joueur.name } != null) {
-                println("valide meta dans")
                 stackmeta.lore = mutableListOf("§aJoueur dans la partie.")
                 if (joueur.player.name == main.config.parrain?.player?.name) {
                     stackmeta.lore = mutableListOf("§eParrain actuellement définit.")
@@ -103,9 +102,7 @@ fun joueursConfigConstructeur(main : MafiaUHC, numpage : Int, joueurs : Array<Pl
             } else {
                 stackmeta.lore = mutableListOf("§cJoueur hors partie.")
             }
-            println("meta : ${stackmeta.lore}")
             stack.itemMeta = stackmeta
-            println(stack.itemMeta.lore)
             inventaire.addItem(stack)
         } else {
             break

@@ -57,7 +57,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     @EventHandler
     fun itemUtil(event: PlayerInteractEvent) {
         val item = event.item
-        if (item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags) {
+        if (item != null && item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags) {
             event.isCancelled = true
             event.player.openInventory(configInvConstructeur())
         }
@@ -74,7 +74,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
         // PROBLEM CHECK
 
-        if (inv == null || inv.name == null || item == null) {
+        if (inv == null || inv.name == null || item == null || item.type == Material.AIR) {
             println("onClick Problem : $inv, ${inv.name}, $item, $joueur")
             return
         }
