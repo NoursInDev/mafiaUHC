@@ -4,19 +4,19 @@ import org.bukkit.Bukkit
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import org.noursindev.mafiauhc.MafiaUHC
+import org.noursindev.mafiauhc.ressources.Boite
 
-fun boiteInvConstruct(main: MafiaUHC): Inventory {
-    val inv: Inventory = Bukkit.createInventory(null, 18, "§dBoite de Cigares")
+fun boiteInvConstruct(boite: Boite, nom : String = "Boite de Cigares"): Inventory {
+    val inv: Inventory = Bukkit.createInventory(null, 18, "§d$nom")
     var count = inv.size - 1
 
-    for (element in 0 until main.config.boite.retourneBoite().size) {
-        if (main.config.boite.retourneBoite().values.elementAt(element) > 0) {
-            val key = main.config.boite.retourneBoite().keys.elementAt(element)
+    for (element in 0 until boite.retourneBoite().size) {
+        if (boite.retourneBoite().values.elementAt(element) > 0) {
+            val key = boite.retourneBoite().keys.elementAt(element)
             val playerName = headLink[key] ?: "Notch"
-            val stack: ItemStack = createPlayerHead(playerName, main.config.boite.retourneBoite().keys.elementAt(element), main.config.boite.retourneBoite().values.elementAt(element))
+            val stack: ItemStack = createPlayerHead(playerName, boite.retourneBoite().keys.elementAt(element), boite.retourneBoite().values.elementAt(element))
             val stackmeta: ItemMeta = stack.itemMeta
-            stackmeta.displayName = main.config.boite.retourneBoite().keys.elementAt(element)
+            stackmeta.displayName = boite.retourneBoite().keys.elementAt(element)
             stack.itemMeta = stackmeta
             inv.setItem(count, stack)
 

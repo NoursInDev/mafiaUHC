@@ -84,6 +84,11 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         if (inv.name == "§dBoite de Cigares" && joueur != null && joueur.tour) {
             event.isCancelled = true
             when (item.itemMeta.displayName) {
+                "pierres", "fideles", "agents", "chauffeurs", "nettoyeurs", "enfants des rues" -> {
+                    joueur.boite = main.config.boite.clone() as Boite
+                }
+            }
+            when (item.itemMeta.displayName) {
                 "pierres" -> {
                     joueur.player.closeInventory()
                     Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre pierres") }
@@ -150,6 +155,10 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     joueur.player.closeInventory()
                 }
             }
+        }
+
+        if (inv.name == "§dBoite de Cigares Initiale" || inv.name == "§dBoite de Cigares Tour") {
+            event.isCancelled = true
         }
 
         // CONFIG CHECK

@@ -2,7 +2,7 @@ package org.noursindev.mafiauhc.ressources
 
 import org.noursindev.mafiauhc.MafiaUHC
 
-class Boite(val main: MafiaUHC) {
+class Boite(val main: MafiaUHC) : Cloneable {
     var pierres: Int = 1
     var fideles: Int = 0
     var agents: Int = 0
@@ -26,5 +26,9 @@ class Boite(val main: MafiaUHC) {
         this.chauffeurs = nbj / 11 * 2
         this.nettoyeurs = nbj / 12
         this.fideles = nbj / 10 * 4 - this.nettoyeurs
+    }
+
+    public override fun clone(): Any {
+        return super.clone()
     }
 }

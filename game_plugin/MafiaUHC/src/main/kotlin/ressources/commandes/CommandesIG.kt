@@ -24,7 +24,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
 
                 "ouvrir" -> {
                     if (joueur != null && joueur.tour) {
-                        joueur.player.openInventory(boiteInvConstruct(main))
+                        joueur.player.openInventory(boiteInvConstruct(main.config.boite))
                     } else {
                         sender.sendMessage("Vous ne pouvez pas ouvrir la Boite.")
                     }
@@ -40,7 +40,29 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
 
                 "boite" -> {
                     if (args.size > 1 && (args[1] == "init" || args[1] == "tour") && joueur?.role != null) {
-                        sender.sendMessage(joueur.role!!.description)
+                        when (args[1]) {
+                            "init" -> {
+                                joueur.player.openInventory(
+                                    boiteInvConstruct(
+                                        main.config.initialBoite!!,
+                                        "Boite de Cigares Initiale"
+                                    )
+                                )
+                            }
+
+                            "tour" -> {
+                                if (joueur.boite != null) {
+                                    joueur.player.openInventory(
+                                        boiteInvConstruct(
+                                            joueur.boite!!,
+                                            "Boite de Cigares de ton Tour"
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        sender.sendMessage("Usage: /mf boite <init|tour>")
                     }
                 }
 
@@ -114,7 +136,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 }
 
                 else -> {
-                    sender.sendMessage("Usage: /mf <ordre|ouvrir|prendre>")
+                    sender.sendMessage("Usage: /mf <ordre|ouvrir|prendre|role|boite>")
                 }
             }
         }

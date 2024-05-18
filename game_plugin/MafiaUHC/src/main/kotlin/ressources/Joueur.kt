@@ -7,4 +7,5 @@ class Joueur(val player: CraftPlayer) {
     var role : RoleSuper? = null
     var tour : Boolean = false
     var vivant : Boolean = true
+    var boite : Boite? = null
 }

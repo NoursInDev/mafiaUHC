@@ -53,7 +53,7 @@ class MafiaUHC : JavaPlugin() {
             val igtimer = GameTimer(this)
             igtimer.runTaskTimer(this, 0, 20)
         }
-        config.initialBoite = config.boite
+        config.initialBoite = config.boite.clone() as Boite
     }
 
 }
