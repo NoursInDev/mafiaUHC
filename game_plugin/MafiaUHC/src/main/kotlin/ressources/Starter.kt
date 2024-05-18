@@ -29,10 +29,15 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                 playerlist.add(it.player)
                 it.player.gameMode = org.bukkit.GameMode.SURVIVAL
                 it.player.addPotionEffect(org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
-                main.lancePartie()
             }
+            reduceWorldBorder(main.config.world!!, main.config.bordure[0].toDouble(), 0)
+            setBorderDamage(main.config.world!!, main.config.bordure[4].toDouble())
+            setWorldBorderCenter(main.config.world!!, 0.0, 0.0)
+            activateWorldBorder(main.config.world!!, main.config.bordure)
             main.ordre = main.config.joueurs.shuffled().toTypedArray()
             main.ordre = main.ordre?.filterNot { it == main.config.parrain }?.toTypedArray()
+            main.lancePartie()
+            println("HERE")
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
@@ -79,14 +84,14 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
     }
 
     private fun teleport(players : MutableSet<CraftPlayer>) {
+        val dist = main.config.bordure[2]
         for (p in players) {
             var x: Int
             var z: Int
             do {
-                x = Random.nextInt(-1000, 1000)
-                z = Random.nextInt(-1000, 1000)
-            } while (x*x + z*z < 300*300)
-
+                x = Random.nextInt(-dist, dist)
+                z = Random.nextInt(-dist, dist)
+            } while (x*x + z*z < (-dist/2)*(dist/2))
             val y = p.world.getHighestBlockYAt(x, z) + 2
             p.teleport(Location(p.world, x.toDouble(), y.toDouble(), z.toDouble()))
         }

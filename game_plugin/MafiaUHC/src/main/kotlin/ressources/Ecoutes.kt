@@ -161,6 +161,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     player.closeInventory()
                     player.openInventory(
                         joueursConfigConstructeur(
+                            main,
                             0,
                             main.server.onlinePlayers.toTypedArray(),
                             main.config.joueurs
@@ -407,6 +408,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                         player.closeInventory()
                         player.openInventory(
                             joueursConfigConstructeur(
+                                main,
                                 event.inventory.contents[45].amount - 1,
                                 main.server.onlinePlayers.toTypedArray(),
                                 main.config.joueurs
@@ -420,7 +422,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                         player.closeInventory()
                         player.openInventory(
                             joueursConfigConstructeur(
-                                event.inventory.contents[45].amount + 1,
+                                main,event.inventory.contents[45].amount + 1,
                                 main.server.onlinePlayers.toTypedArray(),
                                 main.config.joueurs
                             )

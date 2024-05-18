@@ -17,11 +17,10 @@ class MafiaUHC : JavaPlugin() {
     override fun onEnable() {
         logger.info("MafiaUHC est activé pour votre serveur.")
 
-        val world = server.worlds[0]
-        world.setGameRuleValue("naturalRegeneration", "false")
-        world.setGameRuleValue("deathMessages", "false")
-
         config = Configuration(mutableSetOf(), Boite(this))
+        config.world = server.worlds[0]
+        config.world!!.setGameRuleValue("naturalRegeneration", "false")
+        config.world!!.setGameRuleValue("deathMessages", "false")
 
         setPhase(Phases.Configuration)
 

@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.ItemMeta
+import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.Joueur
 import org.noursindev.mafiauhc.ressources.Boite
 import org.noursindev.mafiauhc.ressources.Configuration
@@ -85,7 +86,7 @@ fun rolesConfigInvConstructeur(boite: Boite): Inventory {
     return inventaire
 }
 
-fun joueursConfigConstructeur(numpage : Int, joueurs : Array<Player>, liste : MutableSet<Joueur>): Inventory {
+fun joueursConfigConstructeur(main : MafiaUHC, numpage : Int, joueurs : Array<Player>, liste : MutableSet<Joueur>): Inventory {
     val inventaire: Inventory = Bukkit.createInventory(null, 6 * 9, "§aJoueurs")
     for (i in numpage * 45 until (numpage + 1) * 45) {
         if (i < joueurs.size) {
@@ -96,7 +97,7 @@ fun joueursConfigConstructeur(numpage : Int, joueurs : Array<Player>, liste : Mu
             if (liste.find { it.player.name == joueur.name } != null) {
                 println("valide meta dans")
                 stackmeta.lore = mutableListOf("§aJoueur dans la partie.")
-                if (liste.find { it.player.name == joueur.name }?.role is Parrain) {
+                if (joueur.player.name == main.config.parrain?.player?.name) {
                     stackmeta.lore = mutableListOf("§eParrain actuellement définit.")
                 }
             } else {

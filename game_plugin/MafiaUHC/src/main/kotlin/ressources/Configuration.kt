@@ -1,11 +1,14 @@
 package org.noursindev.mafiauhc.ressources
 
+import org.bukkit.World
+
 
 class Configuration(var joueurs: MutableSet<Joueur>, boite : Boite) {
     var boite : Boite
     var initialBoite : Boite? = null
     var bordure : Array<Int>
     var parrain : Joueur? = null
+    var world : World? = null
 
     init {
         this.boite = boite

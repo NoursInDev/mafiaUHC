@@ -18,6 +18,9 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
             60 -> {
                 main.setPhase(Phases.Active)
             }
+            main.config.bordure[0] * 60 -> {
+                reduceWorldBorder(main.config.world!!, main.config.bordure[3].toDouble(), ((main.config.bordure[1] - main.config.bordure[0]) * 60 ).toLong())
+            }
         }
         time++
     }
