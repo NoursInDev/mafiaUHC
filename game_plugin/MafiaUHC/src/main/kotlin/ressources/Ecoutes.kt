@@ -494,6 +494,11 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 joueur.role!!.pierres = 0
                 checkFin(main, event)
             }
+            if (main.getPhase() == Phases.Finale) {
+                if (checkFinal(main, event) == 1) {
+
+                }
+            }
         }
 
     }
