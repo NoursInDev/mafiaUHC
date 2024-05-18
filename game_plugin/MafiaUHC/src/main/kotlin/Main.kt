@@ -1,5 +1,6 @@
 package org.noursindev.mafiauhc
 
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 import org.noursindev.mafiauhc.ressources.Joueur
@@ -21,6 +22,10 @@ class MafiaUHC : JavaPlugin() {
         config.world = server.worlds[0]
         config.world!!.setGameRuleValue("naturalRegeneration", "false")
         config.world!!.setGameRuleValue("deathMessages", "false")
+
+        for (player in server.onlinePlayers) {
+            config.joueurs.add(Joueur(player as CraftPlayer))
+        }
 
         setPhase(Phases.Configuration)
 
