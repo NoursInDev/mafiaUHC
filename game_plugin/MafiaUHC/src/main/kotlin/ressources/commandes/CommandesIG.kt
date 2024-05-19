@@ -39,7 +39,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 }
 
                 "boite" -> {
-                    if (args.size > 1 && (args[1] == "init" || args[1] == "tour") && joueur?.role != null && main.config.passage) {
+                    if (args.size > 1 && (args[1] == "init" || args[1] == "tour" || args[1] == "final") && joueur?.role != null && main.config.passage) {
                         when (args[1]) {
                             "init" -> {
                                 joueur.player.openInventory(
@@ -71,7 +71,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
                         }
                     } else {
-                        sender.sendMessage("Usage: /mf boite <init|tour>")
+                        sender.sendMessage("Usage: /mf boite <init|tour|final> après tour de la boite.")
                     }
                 }
 
