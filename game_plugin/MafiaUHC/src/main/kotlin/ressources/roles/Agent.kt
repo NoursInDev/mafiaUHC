@@ -1,6 +1,7 @@
 package org.noursindev.mafiauhc.ressources.roles
 
 import org.noursindev.mafiauhc.MafiaUHC
+import org.noursindev.mafiauhc.ressources.Joueur
 
 
 class Agent(main : MafiaUHC):RoleSuper(main = main) {
@@ -10,5 +11,9 @@ class Agent(main : MafiaUHC):RoleSuper(main = main) {
 
     override fun roleShow(): String {
         return description
+    }
+
+    override fun mfParrain(joueur: Joueur): Boolean {
+        return joueur.role is Parrain
     }
 }

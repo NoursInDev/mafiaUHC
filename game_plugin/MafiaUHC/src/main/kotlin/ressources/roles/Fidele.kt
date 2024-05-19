@@ -1,6 +1,7 @@
 package org.noursindev.mafiauhc.ressources.roles
 
 import org.noursindev.mafiauhc.MafiaUHC
+import org.noursindev.mafiauhc.ressources.Joueur
 
 
 open class Fidele(main : MafiaUHC):RoleSuper(main = main) {
@@ -10,4 +11,7 @@ open class Fidele(main : MafiaUHC):RoleSuper(main = main) {
         return description
     }
 
+    override fun mfPression(joueur: Joueur) : Boolean {
+        return (joueur.role is Voleur)
+    }
 }

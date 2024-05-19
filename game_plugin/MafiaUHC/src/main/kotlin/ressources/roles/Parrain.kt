@@ -16,7 +16,21 @@ class Parrain(main : MafiaUHC):RoleSuper(main = main) {
     }
 
     override fun mfPierres(joueur: Joueur): Int? {
-        return null
+        return joueur.role?.pierres
+    }
+
+    override fun mfGuess(joueur: Joueur): Boolean {
+        return (joueur.role is Agent)
+    }
+
+    override fun mfForcerecup() : Boolean{
+        for (j in main.config.joueurs) {
+            if (j.role is Fidele) {
+                pierres += j.role!!.pierres
+                j.role!!.pierres = 0
+            }
+        }
+        return true
     }
 
 }

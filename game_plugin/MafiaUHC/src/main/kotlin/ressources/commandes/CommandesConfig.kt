@@ -126,6 +126,10 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                     }
 
                     "start" -> {
+                        if (main.config.joueurs.size < 2) {
+                            sender.sendMessage("Il n'y a pas assez de joueurs pour commencer la partie.")
+                            return false
+                        }
                         run {
                             val start = Starter(main)
                             start.runTaskTimer(main, 0, 20)

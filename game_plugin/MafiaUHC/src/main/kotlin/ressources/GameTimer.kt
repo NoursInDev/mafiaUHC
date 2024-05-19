@@ -15,11 +15,17 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
                 println("Tour de la boite.")
                 lancerTours()
             }
+
             60 -> {
                 main.setPhase(Phases.Active)
             }
+
             main.config.bordure[0] * 60 -> {
-                reduceWorldBorder(main.config.world!!, main.config.bordure[3].toDouble(), ((main.config.bordure[1] - main.config.bordure[0]) * 60 ).toLong())
+                reduceWorldBorder(
+                    main.config.world!!,
+                    main.config.bordure[3].toDouble(),
+                    ((main.config.bordure[1] - main.config.bordure[0]) * 60).toLong()
+                )
             }
         }
         time++
@@ -54,7 +60,12 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
         val rolesDisponibles = mutableListOf<RoleSuper>()
         if (main.config.boite.fideles > 0) rolesDisponibles.add(Fidele(main))
         if (main.config.boite.agents > 0) rolesDisponibles.add(Agent(main))
-        if (main.config.boite.chauffeurs > 0) rolesDisponibles.add(Chauffeur(main))
+        if (main.config.boite.chauffeurs > 0) rolesDisponibles.add(
+            Chauffeur(
+                main,
+                main.config.joueurs.filter { it.player != joueur.player }.random()
+            )
+        )
         if (main.config.boite.nettoyeurs > 0) rolesDisponibles.add(Nettoyeur(main))
         if (main.config.boite.pierres > 0) rolesDisponibles.add(Voleur(main))
 
@@ -64,11 +75,14 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
         } else {
             joueur.role = rolesDisponibles.random()
             when (joueur.role!!) {
-                Fidele(main) -> main.config.boite.fideles--
-                Agent(main) -> main.config.boite.agents--
-                Chauffeur(main) -> main.config.boite.chauffeurs--
-                Nettoyeur(main) -> main.config.boite.nettoyeurs--
-                Voleur(main) -> main.config.boite.pierres--
+                is Nettoyeur -> {
+                    main.config.boite.nettoyeurs--
+                    return
+                }
+                is Fidele -> main.config.boite.fideles--
+                is Agent -> main.config.boite.agents--
+                is Chauffeur -> main.config.boite.chauffeurs--
+                is Voleur -> main.config.boite.pierres--
             }
         }
         joueur.player.sendMessage("Votre rôle a été définit automatiquement. Vous êtes ${joueur.role!!.nom}.")

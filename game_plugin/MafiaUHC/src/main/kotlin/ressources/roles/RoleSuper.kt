@@ -17,13 +17,13 @@ abstract class RoleSuper(val main : MafiaUHC) {
     open fun mfReunion(joueur: Joueur)      : Boolean? { return null }
     open fun mfPierres(joueur: Joueur)      : Int? { return null }
     open fun mfGuess(joueur: Joueur)        : Boolean? { return null }
-    open fun mfForcerecup(joueur: Joueur)   : Boolean? { return null }
+    open fun mfForcerecup()                 : Boolean? { return null }
 
     // Fidele
     open fun mfPression(joueur: Joueur)     : Boolean? { return null }
 
     //Voleur
-    open fun mfActivate(joueur: Joueur)     : Boolean? { return null }
+    open fun mfActivate()                   : Boolean? { return null }
 
     //Enfant des Rues
 

@@ -7,13 +7,15 @@ import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.inventaires.boiteInvConstruct
 import org.noursindev.mafiauhc.ressources.inventaires.pierresInvConstruct
 import org.noursindev.mafiauhc.ressources.roles.*
+import org.noursindev.mafiauhc.ressources.Phases
 
+@Suppress("UNUSED_EXPRESSION")
 class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 
         val joueur = main.config.joueurs.find { it.player.name == sender.name }    // recup joueur
 
-        if (args.isNotEmpty()) {
+        if (args.isNotEmpty() && main.getPhase() != Phases.Configuration) {
             when (args[0]) {
                 "ordre" -> {
                     sender.sendMessage("Ordre des joueurs:")
@@ -111,7 +113,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             "chauffeur" -> {
                                 if (main.config.boite.chauffeurs > 0) {
                                     main.config.boite.chauffeurs--
-                                    joueur.role = Chauffeur(main)
+                                    joueur.role = Chauffeur(main, main.config.joueurs.filter { it.player != joueur.player }.random())
                                 } else {
                                     sender.sendMessage("Il n'y a plus de chauffeurs dans la boite")
                                 }
@@ -144,11 +146,54 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                     }
                 }
 
+                // Spe Joueurs
+                // Spe Parrain
+
+                "reunion" -> {
+                    joueur?.role?.mfReunion( joueur)
+                }
+
+                "pierres" -> {
+                    joueur?.role?.mfPierres( joueur)
+                }
+
+                "guess" -> {
+                    joueur?.role?.mfGuess( joueur)
+                }
+
+                "forcerecup" -> {
+                    joueur?.role?.mfForcerecup()
+                }
+
+                // Spe Fidele
+
+                "pression" -> {
+                    joueur?.role?.mfPression( joueur)
+                }
+
+                // Spe Voleur
+
+                "active" -> {
+                    joueur?.role?.mfActivate()
+                }
+
+                // Spe Chauffeur
+
+                "localise" -> {
+                    joueur?.role?.mfLocalise( joueur)
+                }
+
+                // Spe Agent
+
+                "parrain" -> {
+                    joueur?.role?.mfParrain( joueur)
+                }
+
                 else -> {
                     sender.sendMessage("Usage: /mf <ordre|ouvrir|prendre|role|boite>")
                 }
             }
-        }
+        } else { "Erreur lors de la commande. Vérifiez que vous êtes dans la partie et que celle-ci est lancée." }
         return true
     }
 }
