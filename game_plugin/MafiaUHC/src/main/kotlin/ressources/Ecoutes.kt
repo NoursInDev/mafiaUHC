@@ -157,7 +157,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
             }
         }
 
-        if (inv.name == "§dBoite de Cigares Initiale" || inv.name == "§dBoite de Cigares Tour") {
+        if (inv.name == "§dBoite de Cigares Initiale" || inv.name == "§dBoite de Cigares Tour" || inv.name == "§dBoite de Cigares Finale") {
             event.isCancelled = true
         }
 

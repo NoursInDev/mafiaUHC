@@ -47,6 +47,7 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
                 go = true
             }, 600L)
         }
+        main.config.passage = true
     }
 
     private fun roleAttribution(joueur: Joueur) {

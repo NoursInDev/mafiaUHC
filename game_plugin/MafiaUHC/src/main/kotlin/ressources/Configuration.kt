@@ -9,6 +9,7 @@ class Configuration(var joueurs: MutableSet<Joueur>, boite : Boite) {
     var bordure : Array<Int>
     var parrain : Joueur? = null
     var world : World? = null
+    var passage : Boolean = false
 
     init {
         this.boite = boite
