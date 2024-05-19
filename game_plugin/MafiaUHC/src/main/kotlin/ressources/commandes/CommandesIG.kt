@@ -58,7 +58,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                                             "Boite de Cigares de ton Tour"
                                         )
                                     )
-                                }
+                                } else { sender.sendMessage("La Boite n'est pas passée par vous.") }
                             }
 
                             "final" -> {

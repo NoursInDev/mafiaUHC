@@ -9,6 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+import org.noursindev.mafiauhc.ressources.roles.Parrain
 import kotlin.random.Random
 
 class Starter(private val main : MafiaUHC):BukkitRunnable() {
@@ -23,6 +24,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                 donneStuff(it.player)
                 if (main.config.parrain != null && it == main.config.parrain) {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
+                    it.role = Parrain(main)
                 } else {
                     it.player.sendMessage("Le Parrain de cette partie est ${main.config.parrain?.player?.name}.")
                 }
@@ -37,7 +39,6 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             main.ordre = main.config.joueurs.shuffled().toTypedArray()
             main.ordre = main.ordre?.filterNot { it == main.config.parrain }?.toTypedArray()
             main.lancePartie()
-            println("HERE")
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
