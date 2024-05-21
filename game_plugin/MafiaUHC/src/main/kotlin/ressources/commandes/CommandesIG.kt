@@ -180,13 +180,13 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 // Spe Chauffeur
 
                 "localise" -> {
-                    joueur?.role?.mfLocalise( joueur)
+                    joueur?.role?.mfLocalise(joueur)
                 }
 
                 // Spe Agent
 
                 "parrain" -> {
-                    joueur?.role?.mfParrain( joueur)
+                    joueur?.role?.mfParrain(joueur)
                 }
 
                 else -> {

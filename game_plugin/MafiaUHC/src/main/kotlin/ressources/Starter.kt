@@ -10,6 +10,8 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.noursindev.mafiauhc.ressources.roles.Parrain
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import kotlin.random.Random
 
 class Starter(private val main : MafiaUHC):BukkitRunnable() {
@@ -39,6 +41,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             main.ordre = main.config.joueurs.shuffled().toTypedArray()
             main.ordre = main.ordre?.filterNot { it == main.config.parrain }?.toTypedArray()
             main.lancePartie()
+            applyRandomEffect(main.config.parrain!!.player)
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
@@ -54,6 +57,19 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             cancel()
         }
         timer--
+    }
+
+    private fun applyRandomEffect(player: Player) {
+        val randomEffect = if (Random.nextBoolean()) PotionEffectType.INCREASE_DAMAGE else PotionEffectType.SPEED
+        val effectDuration = Int.MAX_VALUE // Durée maximale pour rendre l'effet permanent
+        val effectAmplifier = 1 // 1 pour 10% de force ou de vitesse
+
+        // Supprimer les effets existants
+        player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE)
+        player.removePotionEffect(PotionEffectType.SPEED)
+
+        // Appliquer le nouvel effet
+        player.addPotionEffect(PotionEffect(randomEffect, effectDuration, effectAmplifier))
     }
 
     private fun donneStuff(player: Player) {
