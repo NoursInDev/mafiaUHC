@@ -15,6 +15,8 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.inventaires.*
+import org.noursindev.mafiauhc.ressources.roles.Fidele
+import org.noursindev.mafiauhc.ressources.roles.Parrain
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
 
@@ -498,12 +500,20 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 joueur.player.gameMode = org.bukkit.GameMode.SPECTATOR
                 if (tueur?.role != null) {
                     tueur.role!!.pierres += joueur.role!!.pierres
+                    if (tueur?.role is Parrain) {
+                        if (joueur.role is Fidele) {
+                            (tueur.role as Parrain).updateParrainEffects(true)
+                        } else {
+                            (tueur.role as Parrain).updateParrainEffects(false)
+                        }
+                    }
                 } else {
                     main.config.parrain?.role?.pierres =
                         main.config.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
                 }
                 joueur.role!!.pierres = 0
                 checkFin(main, event)
+
             }
             if (main.getPhase() == Phases.Finale) {
                 if (checkFinal(main, event) == 1) {

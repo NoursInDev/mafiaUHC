@@ -33,4 +33,10 @@ class Parrain(main : MafiaUHC):RoleSuper(main = main) {
         return true
     }
 
+    fun updateParrainEffects(killed : Boolean) {
+        if (killed) {
+            main.config.parrain!!.player.maxHealth -= 4.0
+        }
+    }
+
 }

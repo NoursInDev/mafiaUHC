@@ -1,5 +1,6 @@
 package org.noursindev.mafiauhc.ressources
 
+import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.scheduler.BukkitRunnable
@@ -40,7 +41,7 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
             joueur.tour = true
             val message = TextComponent("Vous recevez la Boite de Cigares. Cliquez sur ce message pour l'ouvrir.")
             message.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mf ouvrir")
-            message.color = net.md_5.bungee.api.ChatColor.DARK_PURPLE
+            message.color = ChatColor.GREEN
 
             joueur.player.spigot().sendMessage(message)
 
@@ -54,6 +55,9 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
             }, 600L)
         }
         main.config.passage = true
+        if (main.config.boite.pierres > 0) {
+            main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(main.config.boite.pierres)!!
+        }
     }
 
     private fun roleAttribution(joueur: Joueur) {

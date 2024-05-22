@@ -27,13 +27,18 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                 if (main.config.parrain != null && it == main.config.parrain) {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
                     it.role = Parrain(main)
+                    applyRandomEffect(it.player)
+                    it.player.maxHealth = 26.0
+
                 } else {
                     it.player.sendMessage("Le Parrain de cette partie est ${main.config.parrain?.player?.name}.")
                 }
                 playerlist.add(it.player)
                 it.player.gameMode = org.bukkit.GameMode.SURVIVAL
-                it.player.addPotionEffect(org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
+                it.player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
             }
+
+
             reduceWorldBorder(main.config.world!!, main.config.bordure[0].toDouble(), 0)
             setBorderDamage(main.config.world!!, main.config.bordure[4].toDouble())
             setWorldBorderCenter(main.config.world!!, 0.0, 0.0)
@@ -41,7 +46,8 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             main.ordre = main.config.joueurs.shuffled().toTypedArray()
             main.ordre = main.ordre?.filterNot { it == main.config.parrain }?.toTypedArray()
             main.lancePartie()
-            applyRandomEffect(main.config.parrain!!.player)
+
+
             teleport(playerlist)
         } else if (timer > 0){
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
@@ -52,7 +58,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         } else if (timer == -30) {
             Bukkit.broadcastMessage("Fin de l'invincibilité!")
             for (joueur in main.config.joueurs) {
-                joueur.player.removePotionEffect(org.bukkit.potion.PotionEffectType.DAMAGE_RESISTANCE)
+                joueur.player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE)
             }
             cancel()
         }
@@ -61,7 +67,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
 
     private fun applyRandomEffect(player: Player) {
         val randomEffect = if (Random.nextBoolean()) PotionEffectType.INCREASE_DAMAGE else PotionEffectType.SPEED
-        val effectDuration = Int.MAX_VALUE // Durée maximale pour rendre l'effet permanent
+        val effectDuration = 999999 // Durée maximale pour rendre l'effet permanent
         val effectAmplifier = 1 // 1 pour 10% de force ou de vitesse
 
         // Supprimer les effets existants
