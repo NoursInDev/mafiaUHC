@@ -2,6 +2,7 @@ package org.noursindev.mafiauhc.ressources
 
 import org.bukkit.Effect
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+import org.bukkit.entity.Entity
 import org.noursindev.mafiauhc.ressources.roles.RoleSuper
 
 class Joueur(val player: CraftPlayer) {
@@ -10,5 +11,8 @@ class Joueur(val player: CraftPlayer) {
     var vivant : Boolean = true
     var boite : Boite? = null
 
-    var effects : MutableSet<Effect> = mutableSetOf()
+    init {
+        player as Entity
+    }
+
 }

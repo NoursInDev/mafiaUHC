@@ -158,7 +158,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 }
 
                 "guess" -> {
-                    joueur?.role?.mfGuess( joueur)
+                    joueur?.role?.mfGuess(joueur)
                 }
 
                 "forcerecup" -> {

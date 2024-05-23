@@ -6,6 +6,7 @@ import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.ClickType
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -15,8 +16,9 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.inventaires.*
-import org.noursindev.mafiauhc.ressources.roles.Fidele
-import org.noursindev.mafiauhc.ressources.roles.Parrain
+import org.noursindev.mafiauhc.ressources.roles.*
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class Ecoutes(private val main: MafiaUHC) : Listener {
 
@@ -507,6 +509,44 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 }
                 joueur.role!!.pierres = 0
                 checkFin(main, event)
+            }
+        }
+    }
+
+    @EventHandler
+    fun damagesRegulator(event: EntityDamageByEntityEvent) {
+        val auteur = main.config.joueurs.find { it.player.name == event.damager.name }
+        val prenant = main.config.joueurs.find { it.player.name == event.entity.name }
+
+        if (auteur != null) {
+            if (auteur.role is Parrain) {
+                event.damage *= 1.1
+            }
+            if (auteur.role is Voleur && (auteur.role as Voleur).actif) {
+                event.damage *= 1 - (auteur.role!!.pierres / 100)
+            }
+            if (auteur.role is EnfantDesRues) {
+                if (auteur.role!!.pierres < 3) {
+                    event.damage *= 0.9
+                }
+                if (auteur.role!!.pierres >= 3) {
+                    event.damage *= 1 + ((auteur.role!!.pierres - 3) / 100)
+                }
+            }
+            if (auteur.role is Agent) {
+                event.damage *= 1.1
+            }
+        }
+
+        if (prenant != null) {
+            if (prenant.role is Parrain) {
+                event.damage *= 1 - (prenant.role!!.pierres / 200)
+            }
+            if (prenant.role is Chauffeur && sqrt(((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(2) + ((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(2)) < 50 ) {
+                event.damage *= 0.9
+            }
+            if ((prenant.role is Agent) && !(prenant.role as Agent).vulnerable) {
+                event.damage *= 0.9
             }
         }
     }

@@ -21,13 +21,19 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         if(timer == 0) {
             Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
             val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
+
+            if (main.config.parrain == null) {
+                val newparrain = main.config.joueurs.random()
+                main.config.parrain = newparrain
+                newparrain.role = Parrain(main)
+            }
+
             main.config.joueurs.forEach {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
                 donneStuff(it.player)
                 if (main.config.parrain != null && it == main.config.parrain) {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
                     it.role = Parrain(main)
-                    applyRandomEffect(it.player)
                     it.player.maxHealth = 26.0
 
                 } else {
@@ -44,7 +50,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             setWorldBorderCenter(main.config.world!!, 0.0, 0.0)
             activateWorldBorder(main.config.world!!, main.config.bordure)
             main.ordre = main.config.joueurs.shuffled().toTypedArray()
-            main.ordre = main.ordre?.filterNot { it == main.config.parrain }?.toTypedArray()
+            main.ordre = main.ordre?.filterNot { it.role is Parrain }?.toTypedArray()
             main.lancePartie()
 
 
@@ -63,19 +69,6 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             cancel()
         }
         timer--
-    }
-
-    private fun applyRandomEffect(player: Player) {
-        val randomEffect = if (Random.nextBoolean()) PotionEffectType.INCREASE_DAMAGE else PotionEffectType.SPEED
-        val effectDuration = 999999 // Durée maximale pour rendre l'effet permanent
-        val effectAmplifier = 1 // 1 pour 10% de force ou de vitesse
-
-        // Supprimer les effets existants
-        player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE)
-        player.removePotionEffect(PotionEffectType.SPEED)
-
-        // Appliquer le nouvel effet
-        player.addPotionEffect(PotionEffect(randomEffect, effectDuration, effectAmplifier))
     }
 
     private fun donneStuff(player: Player) {
