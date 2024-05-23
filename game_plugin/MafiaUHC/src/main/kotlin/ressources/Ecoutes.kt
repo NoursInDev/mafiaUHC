@@ -108,20 +108,17 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
                 "chauffeurs" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler()
-                        .runTask(main) { joueur.player.performCommand("mf prendre chauffeur") }
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre chauffeur") }
                 }
 
                 "nettoyeurs" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler()
-                        .runTask(main) { joueur.player.performCommand("mf prendre nettoyeur") }
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre nettoyeur") }
                 }
 
                 "enfants des rues" -> {
                     joueur.player.closeInventory()
-                    Bukkit.getScheduler()
-                        .runTask(main) { joueur.player.performCommand("mf prendre enfantdesrues") }
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre enfantdesrues") }
 
                 }
             }
@@ -152,8 +149,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 }
 
                 "Valider" -> {
-                    Bukkit.getScheduler()
-                        .runTask(main) { joueur.player.performCommand("mf prendre pierres $count") }
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre pierres $count") }
                     joueur.player.closeInventory()
                 }
             }
@@ -172,10 +168,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     player.closeInventory()
                     player.openInventory(
                         joueursConfigConstructeur(
-                            main,
-                            0,
-                            main.server.onlinePlayers.toTypedArray(),
-                            main.config.joueurs
+                            main, 0, main.server.onlinePlayers.toTypedArray(), main.config.joueurs
                         )
                     )
                 }
@@ -433,7 +426,8 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                         player.closeInventory()
                         player.openInventory(
                             joueursConfigConstructeur(
-                                main,event.inventory.contents[45].amount + 1,
+                                main,
+                                event.inventory.contents[45].amount + 1,
                                 main.server.onlinePlayers.toTypedArray(),
                                 main.config.joueurs
                             )
@@ -494,13 +488,13 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         val joueur = main.config.joueurs.find { it.player == event.entity }
         if (joueur != null) {
             joueur.vivant = false
-            if (main.getPhase() == Phases.Active && joueur.role != null) {
+            if (joueur.role != null) {
                 val tueur = main.config.joueurs.find { it.player == event.entity.killer }
                 event.deathMessage = "§e${event.entity.name}§a est mort."
                 joueur.player.gameMode = org.bukkit.GameMode.SPECTATOR
                 if (tueur?.role != null) {
                     tueur.role!!.pierres += joueur.role!!.pierres
-                    if (tueur?.role is Parrain) {
+                    if (tueur.role is Parrain) {
                         if (joueur.role is Fidele) {
                             (tueur.role as Parrain).updateParrainEffects(true)
                         } else {
@@ -513,14 +507,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 }
                 joueur.role!!.pierres = 0
                 checkFin(main, event)
-
-            }
-            if (main.getPhase() == Phases.Finale) {
-                if (checkFinal(main, event) == 1) {
-
-                }
             }
         }
-
     }
 }
