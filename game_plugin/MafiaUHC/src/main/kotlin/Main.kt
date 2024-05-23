@@ -6,11 +6,12 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.noursindev.mafiauhc.ressources.Joueur
 import org.noursindev.mafiauhc.ressources.*
 import org.noursindev.mafiauhc.ressources.commandes.CommandesConfig
+import org.noursindev.mafiauhc.ressources.commandes.CommandesDev
 import org.noursindev.mafiauhc.ressources.commandes.CommandesIG
 
 
 class MafiaUHC : JavaPlugin() {
-
+    var devmode = false
     lateinit var config: Configuration
     private var phase: Phases = Phases.Configuration
     var ordre: Array<Joueur>? = null
@@ -34,6 +35,7 @@ class MafiaUHC : JavaPlugin() {
 
         this.getCommand("mfc").executor = CommandesConfig(this)
         this.getCommand("mf").executor = CommandesIG(this)
+        this.getCommand("mfd").executor = CommandesDev(this)
     }
 
     override fun onDisable() {
