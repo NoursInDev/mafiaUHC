@@ -1,0 +1,22 @@
+name: MafiaUHC
+version: 0.0.16.x1 [RTP + DevP]
+author: NoursInDev
+main: org.noursindev.mafiauhc.MafiaUHC
+commands:
+  mf:
+    description: Main command for MafiaUHC
+    usage: /mf <subcommand>
+    aliases:
+      - mafiauhc
+  mfc:
+    description: Config command for MafiaUHC
+    usage: /mfc <subcommand> as OP
+    aliases:
+      - mfconfig
+      - mafiauhcconfig
+  mfd:
+    description: Development test command for MafiaUHC
+    usage: /mfd <subcommand> as OP + DEV=ON (devmode)
+    aliases:
+      - mfdev
+      - mafiauhcdev
