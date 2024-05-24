@@ -1,0 +1,52 @@
+{
+  "mafiauhc": {
+    "name": "MafiaUHC",
+    "prefix": "&8[&4MafiaUHC&8] &7",
+    "gstone": "Pierre",
+    "gstones": "Pierres",
+    "box": "Boite",
+    "commands": {
+      "box": "boite",
+      "box_follow": {
+        "init": "initiale",
+        "final": "finale",
+        "turn": "tour"
+      },
+      "nbg": "nbp",
+      "givegstones": "donnepierres",
+      "order": "ordre",
+      "role": "role"
+    },
+    "roles": {
+      "godfather": {
+        "name": "Parrain",
+        "description": "Vous êtes le Parrain de la Mafia.\nA ce titre, vous êtes le rôle central de cette partie. Pour la remporter, vous devez récupérer en votre possession l'intégralité des pierres initialement présentes dans la partie.\n\nAfin de vous aider dans cette tache, vous disposez de fidèles parmi les joueurs de la partie. Attention, tuer un fidèle vous fait perdre 2 coeurs de manière permanente.\n\nVous possédez les effets suivants :\n13 coeurs, 10% de Force ou de Vitesse (définit aléatoirement), 1% de résistance toutes les 2 pierres que vous possédez.\n\nVous possédez les pouvoirs suivants :\n/mf reunion\nUtilisable une fois entre 90 et 120 minutes de jeu.\nTéléporte tous les joueurs dans la Salle de Réunion. Dans celle-ci, personne ne peut mourir, et le Parrain a la possibilité d'effectuer les commandes /mf freeze joueur et /mf unfreeze joueur pour immobiliser le joueur ciblé (si joueur non renseigné, immobilise tous les joueurs à l'exception du Parrain). La Salle de Réunion se ferme automatiquement 5 minutes après son ouverture, ou manuellement si le Parrain retape la commande d'ouverture.\n\n/mf pierres <joueur>\nUtilisable 2 fois à partir du premier mort.\nIndique au Parrain le nombre de pierres que possède le joueur ciblé tant que le joueur est au maximum à 25m du Parrain.\n\n/mf guess <joueur>\nUtilisable toutes les 20 minutes\nConfirme si le joueur ciblé est agent. En cas de réussite, l'agent ciblé devient Vulnérable. En cas d'échec, le Parrain perd 1 coeur de manière permanente.\n\n/mf forcerecup\nUtilisable une fois dans la partie\nRécupère les pierres de tous les fidèles.",
+        "meeting": "Vous venez de convoquer la Réunion du Parrain.",
+        "convocation": "Vous venez d'être convoqué à la Réunion du Parrain.",
+        "gf_freeze": "Vous venez d'immobiliser ${gplayer}.",
+        "gf_unfreeze": "Vous venez de délivrer ${gplayer}.",
+        "gr_freeze_all": "Vous venez d'immobiliser tous les joueurs.",
+        "gr_unfreeze_all": "Vous venez de délivrer tous les joueurs.",
+        "gstones": "Le joueur ${gplayer} possède ${gamount} ${gstone}.",
+        "guessfalse": "Le joueur ${gplayer} n'est pas agent.",
+        "guesstrue": "Le joueur ${gplayer} est agent.",
+        "forcerecover": "Vous venez de récupérer les pierres de tous les fidèles.",
+        "commands": {
+          "nbg": "nbp",
+          "givegstones": "donnepierres",
+          "order": "ordre",
+          "role": "role"
+        }
+      },
+      "loyal": {
+        "name": "Fidèle",
+        "description": "Vous êtes un Fidèle de la Mafia.\nVous devez aider le Parrain à récupérer ses pierres pour gagner.\n\nVous connaissez l'identité du Parrain.\n\nVous possédez les effets suivants :\nBonus au choix de 2 pommes d'or ou de 2% de résistance toutes les 3 pierres données au Parrain.\n\nVous possédez les pouvoirs suivants :\n/mf pression <joueur>\nUtilisable jusqu'en cas d'échec\nConfirme si le joueur ciblé est Voleur. En cas d'échec, le Fidèle perd 5 coeurs de manière permanente.",
+        "pressurefalse": "Le joueur ${gplayer} n'est pas Voleur, vous perdez 5 coeurs de manière permanente.",
+        "pressuretrue": "Le joueur ${gplayer} est Voleur.",
+        "commands": {
+          "pressure": "pression"
+        }
+      }
+    }
+  }
+}
