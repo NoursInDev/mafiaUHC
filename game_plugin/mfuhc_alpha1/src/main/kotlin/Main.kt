@@ -57,5 +57,5 @@ class MafiaUHC : JavaPlugin() {
         }
         config.initialBoite = config.boite.clone() as Boite
     }
-
+// THE SOONEST : ScoreBoard, NEXT : Tab, FINAL : Tests
 }
