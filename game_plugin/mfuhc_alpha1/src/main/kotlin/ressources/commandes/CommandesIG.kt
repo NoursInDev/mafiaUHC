@@ -270,8 +270,9 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                                 main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(nb)!!
                                 sender.sendMessage("Vous avez donné $nb pierres au Parrain.")
                             }
-                            if (joueur.role!!.donnees % 3 == 0 ) {
-                                (joueur.role as Fidele).nbchoix++
+                            if (joueur.role!!.donnees - (joueur.role!! as Fidele).nbchoix >= 3) {
+                                val augm = (joueur.role!!.donnees - (joueur.role!! as Fidele).nbchoix - 3) / 3
+                                (joueur.role as Fidele).nbchoix += augm
                                 sender.sendMessage("Vous pouvez choisir entre 2% de résistance (/mf choix resi) et une pomme d'or (/mf choix pomme).")
                             }
                         }
@@ -279,8 +280,8 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 }
 
                 "choix" -> {
-                    if (args.size >= 2 && joueur?.role is Fidele && (joueur.role as Fidele).nbchoix >= 1 && (args[1] == "pomme" || args[1] == "resi")) {
-                        (joueur.role as Fidele).nbchoix--
+                    if (args.size >= 2 && joueur?.role is Fidele && (joueur.role as Fidele).nbchoix - (joueur.role as Fidele).choixeffectues >= 1 && (args[1] == "pomme" || args[1] == "resi")) {
+                        (joueur.role as Fidele).choixeffectues++
                         when (args[1]) {
                             "pomme" -> {
                                 joueur.player.inventory.addItem(ItemStack(Material.GOLDEN_APPLE, 1))

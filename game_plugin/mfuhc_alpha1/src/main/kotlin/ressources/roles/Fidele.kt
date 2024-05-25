@@ -9,6 +9,7 @@ open class Fidele(main : MafiaUHC):RoleSuper(main = main) {
     override val description: String = "Vous êtes fidèle à votre maître, vous ne pouvez pas le trahir."
     var resistance = 0
     var nbchoix = 0
+    var choixeffectues = 0
     override fun roleShow(): String {
         return description
     }

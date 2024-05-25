@@ -459,6 +459,14 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                                     (event.whoClicked as CraftPlayer).performCommand("mfc addjoueur $pseudo")
                                 }
 
+                                if (main.config.parrain != null) {
+                                    player.openInventory(
+                                        joueursConfigConstructeur(
+                                            main, inv.contents[45].amount - 1, main.server.onlinePlayers.toTypedArray(), main.config.joueurs
+                                        )
+                                    )
+                                }
+
                                 (event.whoClicked as CraftPlayer).performCommand("mfc set parrain $pseudo")
                                 itemmeta.lore = mutableListOf("§eParrain actuellement définit.")
                             }
