@@ -12,7 +12,7 @@ class Chauffeur(main : MafiaUHC, val ami: Joueur):RoleSuper(main = main) {
         return description
     }
 
-    override fun mfLocalise(joueur: Joueur): Array<Int> {
+    override fun mfLocalise(): Array<Int> {
         return arrayOf(ami.player.location.x.toInt(), ami.player.location.z.toInt())
     }
 

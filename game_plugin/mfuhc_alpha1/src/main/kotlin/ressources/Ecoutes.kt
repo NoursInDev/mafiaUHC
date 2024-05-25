@@ -499,7 +499,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                     if (tueur.role is Parrain) {
                         if (joueur.role is Fidele) {
                             (tueur.role as Parrain).updateParrainEffects(true)
-                        } else {
+                        } else if (joueur.role is Voleur) {
                             (tueur.role as Parrain).updateParrainEffects(false)
                         }
                     }
@@ -524,7 +524,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
 
         if (auteur != null) {
-            if (auteur.role is Parrain) {
+            if (auteur.role is Parrain && (auteur.role as Parrain).hasForce) {
                 event.damage *= 1.1
             }
             if (auteur.role is Voleur && (auteur.role as Voleur).actif) {

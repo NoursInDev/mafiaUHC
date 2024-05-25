@@ -36,6 +36,7 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
         var go = true
         while (main.ordre!!.any { it.role == null }) {
             if (!go) break
+
             go = false
             val joueur = main.ordre!!.first { it.role == null }
             joueur.tour = true
@@ -52,6 +53,10 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
                 joueur.tour = false
                 go = true
             }, 600L)
+
+            if (joueur.role is Agent) {
+                joueur.player.maxHealth = 26.0
+            }
         }
         main.config.passage = true
         if (main.config.boite.pierres > 0) {

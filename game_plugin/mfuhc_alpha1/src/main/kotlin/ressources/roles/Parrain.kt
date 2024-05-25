@@ -7,6 +7,9 @@ import org.noursindev.mafiauhc.ressources.Joueur
 class Parrain(main : MafiaUHC):RoleSuper(main = main) {
     override val nom: String = "Parrain"
     override val description: String = "Vous êtes le Parrain de la mafia."
+
+    var hasForce = false
+
     override fun roleShow(): String {
         return description
     }
@@ -20,7 +23,11 @@ class Parrain(main : MafiaUHC):RoleSuper(main = main) {
     }
 
     override fun mfGuess(joueur: Joueur): Boolean {
-        return (joueur.role is Agent)
+        if (joueur.role is Agent) {
+            (joueur.role as Agent).vulnerable = true
+            return true
+        }
+        return false
     }
 
     override fun mfForcerecup() : Boolean{
@@ -33,9 +40,11 @@ class Parrain(main : MafiaUHC):RoleSuper(main = main) {
         return true
     }
 
-    fun updateParrainEffects(killed : Boolean) {
-        if (killed) {
+    fun updateParrainEffects(fidele : Boolean) {
+        if (fidele) {
             main.config.parrain!!.player.maxHealth -= 4.0
+        } else {
+            main.config.parrain!!.player.maxHealth += 1.0
         }
     }
 

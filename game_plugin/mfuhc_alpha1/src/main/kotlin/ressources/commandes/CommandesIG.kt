@@ -150,15 +150,36 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 // Spe Parrain
 
                 "reunion" -> {
-                    joueur?.role?.mfReunion( joueur)
+                    joueur?.role?.mfReunion(joueur)
                 }
 
                 "pierres" -> {
-                    joueur?.role?.mfPierres( joueur)
+                    val cible = main.config.joueurs.find { it.player.name == args[1] }
+                    if (cible?.role != null) {
+                        val pierres = joueur?.role?.mfPierres(cible)
+                        if (pierres != null) {
+                            sender.sendMessage("Pierres de ${cible.player.name}: $pierres")
+                        } else {
+                            sender.sendMessage("Vous ne pouvez pas utiliser cette commande.")
+                        }
+                    } else {
+                        sender.sendMessage("Joueur introuvable.")
+                    }
                 }
 
                 "guess" -> {
-                    joueur?.role?.mfGuess(joueur)
+                    val guess = joueur?.role?.mfGuess(joueur)
+                    when (guess) {
+                        true -> {
+                            sender.sendMessage("Vous avez trouvé un agent.")
+                        }
+                        false -> {
+                            sender.sendMessage("La personne ciblée n'est pas agent.")
+                        }
+                        else -> {
+                            sender.sendMessage("Vous ne pouvez pas utiliser cette commande.")
+                        }
+                    }
                 }
 
                 "forcerecup" -> {
@@ -168,7 +189,23 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 // Spe Fidele
 
                 "pression" -> {
-                    joueur?.role?.mfPression( joueur)
+                    val cible = main.config.joueurs.find { it.player.name == args[1] }
+                    if (cible?.role != null) {
+                        val pression = joueur?.role?.mfPression(cible)
+                        if (pression != null) {
+                            sender.sendMessage("Pression sur ${cible.player.name}: $pression")
+                            if (pression) {
+                                sender.sendMessage("Ce joueur est voleur.")
+                            } else {
+                                sender.sendMessage("Ce joueur n'est pas voleur. Vous perdez 5 coeurs de manière permanente.")
+                                joueur.player.maxHealth -= 10.0
+                            }
+                        } else {
+                            sender.sendMessage("Vous ne pouvez pas utiliser cette commande.")
+                        }
+                    } else {
+                        sender.sendMessage("Joueur introuvable.")
+                    }
                 }
 
                 // Spe Voleur
@@ -180,17 +217,60 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 // Spe Chauffeur
 
                 "localise" -> {
-                    joueur?.role?.mfLocalise(joueur)
+                    val localise = joueur?.role?.mfLocalise()
+                    if (localise != null) {
+                        sender.sendMessage("Localisation de l'Ami en ${localise[0]}, ${localise[1]}")
+                    } else {
+                        sender.sendMessage("Vous ne pouvez pas utiliser cette commande.")
+                    }
                 }
 
                 // Spe Agent
 
                 "parrain" -> {
-                    joueur?.role?.mfParrain(joueur)
+                    val cible = main.config.joueurs.find { it.player.name == args[1] }
+                    if (cible != null) {
+                        val parrain = joueur?.role?.mfParrain(cible)
+                        when (parrain) {
+                            true -> {
+                                sender.sendMessage("${cible.player.name} est le Parrain.")
+                            }
+                            false -> {
+                                sender.sendMessage("${cible.player.name} n'est pas le Parrain.")
+                            }
+                            else -> {
+                                sender.sendMessage("Vous ne pouvez pas utiliser cette commande.")
+                            }
+                        }
+                    } else {
+                        sender.sendMessage("Joueur introuvable.")
+                    }
+                }
+
+                // COMMANDES GENERIQUES
+
+                "nbp" -> {
+                    sender.sendMessage("Nombre de pierres que vous possédez: ${joueur?.role?.pierres}")
+                }
+
+                "donnepierres" -> {
+                    if (args.size >= 2) {
+                        val nb = args[1].toIntOrNull()
+                        if (main.config.parrain != null && joueur?.role != null && nb != null) {
+                            if (joueur.role?.pierres!! <= nb) {
+                                joueur.role?.pierres = 0
+                                main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(nb)!!
+                                sender.sendMessage("Vous avez donné $nb pierres au Parrain.")
+                            } else if (joueur.role?.pierres != null) {
+                                joueur.role?.pierres = joueur.role?.pierres!! - nb
+                                main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(nb)!!
+                            }
+                        }
+                    }
                 }
 
                 else -> {
-                    sender.sendMessage("Usage: /mf <ordre|ouvrir|prendre|role|boite>")
+                    sender.sendMessage("Usage: /mf <ordre|ouvrir|prendre|role|boite|ect...>\nMerci de vous référer au wiki pour les commandes spécifiques à votre role.")
                 }
             }
         } else { "Erreur lors de la commande. Vérifiez que vous êtes dans la partie et que celle-ci est lancée." }

@@ -28,10 +28,10 @@ abstract class RoleSuper(val main : MafiaUHC) {
     //Enfant des Rues
 
     //Chauffeur de Bus
-    open fun mfLocalise(joueur: Joueur)     : Array<Int>? { return null }
+    open fun mfLocalise()     : Array<Int>? { return null }
 
     //Agent
-    open fun mfParrain(joueur: Joueur)      : Boolean? { return null}
+    open fun mfParrain(joueur: Joueur)      : Boolean? { return null }
 
     //Nettoyeur
 }

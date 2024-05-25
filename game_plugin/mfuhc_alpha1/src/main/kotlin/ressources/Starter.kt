@@ -14,13 +14,13 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import kotlin.random.Random
 
-class Starter(private val main : MafiaUHC):BukkitRunnable() {
-    private var timer : Int = 10
+class Starter(private val main: MafiaUHC) : BukkitRunnable() {
+    private var timer: Int = 10
 
     override fun run() {
-        if(timer == 0) {
+        if (timer == 0) {
             Bukkit.broadcastMessage("Le jeu commence! (fin de l'invincibilité dans 30 secondes)")
-            val playerlist : MutableSet<CraftPlayer> = mutableSetOf()
+            val playerlist: MutableSet<CraftPlayer> = mutableSetOf()
 
             if (main.config.parrain == null) {
                 val newparrain = main.config.joueurs.random()
@@ -35,9 +35,16 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
                     it.role = Parrain(main)
                     it.player.maxHealth = 26.0
-
+                    (it.role as Parrain).hasForce = Random.nextBoolean()
+                    if (!(it.role as Parrain).hasForce) {
+                        it.player.walkSpeed *= 1.1F
+                        it.player.sendMessage("Vous avez vitesse.")
+                    } else {
+                        it.player.sendMessage("Vous avez force.")
+                    }
                 } else {
                     it.player.sendMessage("Le Parrain de cette partie est ${main.config.parrain?.player?.name}.")
+                    it.player.maxHealth = 20.0
                 }
                 playerlist.add(it.player)
                 it.player.gameMode = org.bukkit.GameMode.SURVIVAL
@@ -55,7 +62,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
 
 
             teleport(playerlist)
-        } else if (timer > 0){
+        } else if (timer > 0) {
             Bukkit.broadcastMessage("Le jeu commence dans $timer secondes.")
             main.config.joueurs.forEach {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 1.0f)
@@ -99,7 +106,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
         player.inventory.addItem(shovel)
     }
 
-    private fun teleport(players : MutableSet<CraftPlayer>) {
+    private fun teleport(players: MutableSet<CraftPlayer>) {
         val dist = main.config.bordure[2]
         for (p in players) {
             var x: Int
@@ -107,7 +114,7 @@ class Starter(private val main : MafiaUHC):BukkitRunnable() {
             do {
                 x = Random.nextInt(-dist, dist)
                 z = Random.nextInt(-dist, dist)
-            } while (x*x + z*z < (-dist/2)*(dist/2))
+            } while (x * x + z * z < (-dist / 2) * (dist / 2))
             val y = p.world.getHighestBlockYAt(x, z) + 2
             p.teleport(Location(p.world, x.toDouble(), y.toDouble(), z.toDouble()))
         }
