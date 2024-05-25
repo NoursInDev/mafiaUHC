@@ -517,11 +517,6 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     fun damagesRegulator(event: EntityDamageByEntityEvent) {
         val auteur = main.config.joueurs.find { it.player.name == event.damager.name }
         val prenant = main.config.joueurs.find { it.player.name == event.entity.name }
-        println("DamagesRegulator : ${event.damager.name} as auteur, ${event.entity.name} as prenant.")
-        println("prenant: ${prenant?.player?.name}, auteur: ${auteur?.player?.name}")
-        println("role auteur: ${auteur?.role?.nom}, role prenant: ${prenant?.role?.nom}")
-        println("damages: ${event.damage}")
-
 
         if (auteur != null) {
             if (auteur.role is Parrain && (auteur.role as Parrain).hasForce) {
@@ -543,20 +538,21 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 event.damage *= 1.1
             }
         }
-        println("damages after auteur: ${event.damage}")
-
         if (prenant != null) {
             if (prenant.role is Parrain) {
                 event.damage *= 1 - (prenant.role!!.pierres / 200)
             }
-            if (prenant.role is Chauffeur && sqrt(((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(2) + ((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(2)) < 50 ) {
+            if (prenant.role is Chauffeur && sqrt(
+                    ((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(
+                        2
+                    ) + ((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(2)
+                ) < 50
+            ) {
                 event.damage *= 0.9
             }
             if ((prenant.role is Agent) && !(prenant.role as Agent).vulnerable) {
                 event.damage *= 0.9
             }
         }
-
-        println("damages after prenant: ${event.damage}")
     }
 }

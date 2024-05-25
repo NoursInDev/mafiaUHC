@@ -30,7 +30,7 @@ class Starter(private val main: MafiaUHC) : BukkitRunnable() {
 
             main.config.joueurs.forEach {
                 it.player.playSound(it.player.location, org.bukkit.Sound.NOTE_PLING, 1.0f, 2.0f)
-                donneStuff(it.player)
+
                 if (main.config.parrain != null && it == main.config.parrain) {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
                     it.role = Parrain(main)
@@ -46,6 +46,9 @@ class Starter(private val main: MafiaUHC) : BukkitRunnable() {
                     it.player.sendMessage("Le Parrain de cette partie est ${main.config.parrain?.player?.name}.")
                     it.player.maxHealth = 20.0
                 }
+
+                donneStuff(it.player)
+
                 playerlist.add(it.player)
                 it.player.gameMode = org.bukkit.GameMode.SURVIVAL
                 it.player.addPotionEffect(PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 600, 255, false, false))
@@ -81,7 +84,7 @@ class Starter(private val main: MafiaUHC) : BukkitRunnable() {
     private fun donneStuff(player: Player) {
         player.inventory.clear()
         player.level = 0
-        player.health = 20.0
+        player.health = player.maxHealth
         player.foodLevel = 20
 
         player.inventory.addItem(ItemStack(Material.APPLE, 64)) // 64 apples
