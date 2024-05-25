@@ -1,8 +1,10 @@
 package org.noursindev.mafiauhc.ressources.commandes
 
+import org.bukkit.Material
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.inventory.ItemStack
 import org.noursindev.mafiauhc.MafiaUHC
 import org.noursindev.mafiauhc.ressources.inventaires.boiteInvConstruct
 import org.noursindev.mafiauhc.ressources.inventaires.pierresInvConstruct
@@ -256,14 +258,37 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                 "donnepierres" -> {
                     if (args.size >= 2) {
                         val nb = args[1].toIntOrNull()
-                        if (main.config.parrain != null && joueur?.role != null && nb != null) {
+                        if (main.config.parrain != null && joueur?.role != null && nb != null && nb != 0 && joueur.role?.pierres != 0) {
                             if (joueur.role?.pierres!! <= nb) {
+                                main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
+                                joueur.role?.donnees = joueur.role?.donnees!! + joueur.role?.pierres!!
                                 joueur.role?.pierres = 0
-                                main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(nb)!!
-                                sender.sendMessage("Vous avez donné $nb pierres au Parrain.")
+                                sender.sendMessage("Vous avez donné toutes vos pierres au Parrain.")
                             } else if (joueur.role?.pierres != null) {
                                 joueur.role?.pierres = joueur.role?.pierres!! - nb
+                                joueur.role?.donnees = joueur.role?.donnees!! + nb
                                 main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(nb)!!
+                                sender.sendMessage("Vous avez donné $nb pierres au Parrain.")
+                            }
+                            if (joueur.role!!.donnees % 3 == 0 ) {
+                                (joueur.role as Fidele).nbchoix++
+                                sender.sendMessage("Vous pouvez choisir entre 2% de résistance (/mf choix resi) et une pomme d'or (/mf choix pomme).")
+                            }
+                        }
+                    }
+                }
+
+                "choix" -> {
+                    if (args.size >= 2 && joueur?.role is Fidele && (joueur.role as Fidele).nbchoix >= 1 && (args[1] == "pomme" || args[1] == "resi")) {
+                        (joueur.role as Fidele).nbchoix--
+                        when (args[1]) {
+                            "pomme" -> {
+                                joueur.player.inventory.addItem(ItemStack(Material.GOLDEN_APPLE, 1))
+                                sender.sendMessage("Vous avez choisi la Pomme.")
+                            }
+                            "resi" -> {
+                                (joueur.role as Fidele).resistance++
+                                sender.sendMessage("Vous avez choisi la Résistance.")
                             }
                         }
                     }

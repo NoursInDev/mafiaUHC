@@ -7,6 +7,7 @@ abstract class RoleSuper(val main : MafiaUHC) {
     abstract val nom: String
     abstract val description: String
 
+    var donnees : Int = 0
     var pierres : Int = 0
     var vivant : Boolean = true
 
