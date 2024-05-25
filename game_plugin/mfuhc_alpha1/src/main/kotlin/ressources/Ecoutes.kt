@@ -77,12 +77,12 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         val itemmeta = item.itemMeta
 
         // PROBLEM CHECK
-
+        /*
         if (inv == null || inv.name == null || item == null || item.type == Material.AIR) {
             println("onClick Problem : $inv, ${inv.name}, $item, $joueur")
             return
         }
-
+        */
         // INGAME CHECK
 
         if (inv.name == "§dBoite de Cigares" && joueur != null && joueur.tour) {
@@ -487,7 +487,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
-        val joueur = main.config.joueurs.find { it.player == event.entity }
+        val joueur = main.config.joueurs.find { it.player.name == event.entity.name }
         if (joueur != null) {
             joueur.vivant = false
             if (joueur.role != null) {
@@ -517,13 +517,19 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     fun damagesRegulator(event: EntityDamageByEntityEvent) {
         val auteur = main.config.joueurs.find { it.player.name == event.damager.name }
         val prenant = main.config.joueurs.find { it.player.name == event.entity.name }
+        println("DamagesRegulator : ${event.damager.name} as auteur, ${event.entity.name} as prenant.")
+        println("prenant: ${prenant?.player?.name}, auteur: ${auteur?.player?.name}")
+        println("role auteur: ${auteur?.role?.nom}, role prenant: ${prenant?.role?.nom}")
+        println("damages: ${event.damage}")
+
 
         if (auteur != null) {
             if (auteur.role is Parrain) {
                 event.damage *= 1.1
             }
             if (auteur.role is Voleur && (auteur.role as Voleur).actif) {
-                event.damage *= 1 - (auteur.role!!.pierres / 100)
+                event.damage *= 1 + (auteur.role!!.pierres / 100)
+                println("Voleur actif")
             }
             if (auteur.role is EnfantDesRues) {
                 if (auteur.role!!.pierres < 3) {
@@ -537,6 +543,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 event.damage *= 1.1
             }
         }
+        println("damages after auteur: ${event.damage}")
 
         if (prenant != null) {
             if (prenant.role is Parrain) {
@@ -549,5 +556,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 event.damage *= 0.9
             }
         }
+
+        println("damages after prenant: ${event.damage}")
     }
 }

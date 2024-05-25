@@ -39,10 +39,9 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
             go = false
             val joueur = main.ordre!!.first { it.role == null }
             joueur.tour = true
-            val message = TextComponent("Vous recevez la Boite de Cigares. Cliquez sur ce message pour l'ouvrir.")
+            println("Tour de ${joueur.player.name}.")
+            val message = TextComponent("§eClickez sur ce message pour ouvrir la boite, ou effecutez /mf ouvrir.")
             message.clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mf ouvrir")
-            message.color = ChatColor.GREEN
-
             joueur.player.spigot().sendMessage(message)
 
             Bukkit.getScheduler().runTaskLater(main, {
