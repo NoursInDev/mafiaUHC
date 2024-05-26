@@ -53,7 +53,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     @EventHandler
     fun dropItemProtege(event: PlayerDropItemEvent) {
         val item = event.itemDrop.itemStack
-        if (item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags) {
+        if (item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags && event.player.isOp) {
             event.isCancelled = true
         }
     }
@@ -61,7 +61,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     @EventHandler
     fun itemUtil(event: PlayerInteractEvent) {
         val item = event.item
-        if (item != null && item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags) {
+        if (item != null && item.itemMeta.displayName == configurateur.itemMeta.displayName && item.itemMeta.itemFlags == configurateur.itemMeta.itemFlags && event.player.isOp) {
             event.isCancelled = true
             event.player.openInventory(configInvConstructeur())
         }
