@@ -28,6 +28,11 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
 
                 "ouvrir" -> {
                     if (joueur != null && joueur.tour) {
+                        println(main.ordre)
+                        if (main.ordre!![0].player.name == joueur.player.name) {
+                            joueur.player.openInventory(boiteInvConstruct(main.config.boite, "Boite de Cigares", true))
+                            return true
+                        }
                         joueur.player.openInventory(boiteInvConstruct(main.config.boite))
                     } else {
                         sender.sendMessage("Vous ne pouvez pas ouvrir la Boite.")
@@ -145,6 +150,47 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                         }
                     } else {
                         sender.sendMessage("Commande incorrecte ou manque d'arguments.")
+                    }
+                }
+
+                "eloigner" -> {
+                    if (args.size >= 2 && joueur?.player?.name == main.ordre!![0].player.name) {
+                        when (args[1]) {
+                            "fidele" -> {
+                                if (main.config.boite.fideles > 0) {
+                                    main.config.boite.fideles--
+                                } else {
+                                    sender.sendMessage("Vous ne pouvez pas éloigner de fidèle.")
+                                }
+                            }
+                            "agent" -> {
+                                if (main.config.boite.agents > 0) {
+                                    main.config.boite.agents--
+                                } else {
+                                    sender.sendMessage("Vous ne pouvez pas éloigner d'agent.")
+                                }
+                            }
+                            "chauffeur" -> {
+                                if (main.config.boite.chauffeurs > 0) {
+                                    main.config.boite.chauffeurs--
+                                } else {
+                                    sender.sendMessage("Vous ne pouvez pas éloigner de chauffeur.")
+                                }
+                            }
+                            "nettoyeur" -> {
+                                if (main.config.boite.nettoyeurs > 0) {
+                                    main.config.boite.nettoyeurs--
+                                } else {
+                                    sender.sendMessage("Vous ne pouvez pas éloigner de nettoyeur.")
+                                }
+                            }
+                            else -> {
+                                sender.sendMessage("Usage: /mf eloigner <fidele|agent|chauffeur|nettoyeur>")
+                            }
+                        }
+                    }
+                    else {
+                        sender.sendMessage("Vous ne pouvez pas éloigner de role.")
                     }
                 }
 

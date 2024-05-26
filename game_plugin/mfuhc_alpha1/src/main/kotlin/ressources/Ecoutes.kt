@@ -76,13 +76,14 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         val item = event.currentItem
         val itemmeta = item.itemMeta
 
+        println(inv.name)
+
         // PROBLEM CHECK
-        /*
-        if (inv == null || inv.name == null || item == null || item.type == Material.AIR) {
-            println("onClick Problem : $inv, ${inv.name}, $item, $joueur")
+
+        if (inv == null || inv.name == null || item == null || item.type == Material.AIR || item.itemMeta.displayName == null) {
             return
         }
-        */
+
         // INGAME CHECK
 
         if (inv.name == "§dBoite de Cigares" && joueur != null && joueur.tour) {
@@ -121,7 +122,35 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                 "enfants des rues" -> {
                     joueur.player.closeInventory()
                     Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf prendre enfantdesrues") }
+                }
+                "§cEloigner un role" -> {
+                    joueur.player.closeInventory()
+                    joueur.player.openInventory(boiteEloigneConstruct(main.config.boite))
+                }
+            }
+        }
+        if (inv.name == "§dEloignement" && joueur != null && joueur.tour) {
+            println("Eloignement")
+            event.isCancelled = true
+            when (item.itemMeta.displayName) {
+                "fideles" -> {
+                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf eloigner fidele") }
+                }
 
+                "agents" -> {
+                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf eloigner agent") }
+                }
+
+                "chauffeurs" -> {
+                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf eloigner chauffeur") }
+                }
+
+                "nettoyeurs" -> {
+                    joueur.player.closeInventory()
+                    Bukkit.getScheduler().runTask(main) { joueur.player.performCommand("mf eloigner nettoyeur") }
                 }
             }
         }
