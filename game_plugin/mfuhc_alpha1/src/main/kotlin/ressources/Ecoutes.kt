@@ -236,6 +236,9 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
             if (itemmeta.displayName == "§aRetour") {
                 player.closeInventory()
                 player.openInventory(configInvConstructeur())
+            } else if (itemmeta.displayName == "§aAutoconfig") {
+                main.config.boite.autoConfig()
+                player.openInventory(rolesConfigInvConstructeur(main.config.boite))
             } else when (event.click) {
                 ClickType.LEFT -> {
                     when (item.itemMeta.displayName) {

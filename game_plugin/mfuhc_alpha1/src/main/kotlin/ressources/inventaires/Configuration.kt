@@ -76,11 +76,17 @@ fun rolesConfigInvConstructeur(boite: Boite): Inventory {
         count--
     }
 
+    val autoconfig = ItemStack(Material.REDSTONE_BLOCK, 1)
+    val autoconfigmeta = autoconfig.itemMeta
+    autoconfigmeta.displayName = "§aAutoconfig"
+    autoconfig.itemMeta = autoconfigmeta
+
     val retour = ItemStack(Material.ARROW, 1)
     val retourmeta = retour.itemMeta
     retourmeta.displayName = "§aRetour"
     retour.itemMeta = retourmeta
 
+    inventaire.setItem(1, autoconfig)
     inventaire.setItem(0, retour)
 
     return inventaire
