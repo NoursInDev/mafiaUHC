@@ -62,6 +62,8 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
         if (main.config.boite.pierres > 0) {
             main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(main.config.boite.pierres)!!
         }
+
+        main.scoreboards.createGameScoreboard()
     }
 
     private fun roleAttribution(joueur: Joueur) {

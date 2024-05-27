@@ -15,6 +15,7 @@ class MafiaUHC : JavaPlugin() {
     lateinit var config: Configuration
     private var phase: Phases = Phases.Configuration
     var ordre: Array<Joueur>? = null
+    var scoreboards = ScoreboardsGestionnaire(this)
 
     override fun onEnable() {
         logger.info("MafiaUHC est activé pour votre serveur.")
