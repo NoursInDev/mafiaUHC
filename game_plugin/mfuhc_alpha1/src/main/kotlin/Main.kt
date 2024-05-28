@@ -60,6 +60,7 @@ class MafiaUHC : JavaPlugin() {
             val igtimer = GameTimer(this)
             igtimer.runTaskTimer(this, 0, 20)
         }
+
         config.initialBoite = config.boite.clone() as Boite
     }
 // THE SOONEST : ScoreBoard, NEXT : Tab, FINAL : Tests

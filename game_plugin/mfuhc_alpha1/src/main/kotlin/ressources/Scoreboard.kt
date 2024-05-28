@@ -53,6 +53,8 @@ class ScoreboardsGestionnaire(val main: MafiaUHC) {
             pair.first.score = index + count
         }
 
+        joueur.player.scoreboard = scoreboard as CraftScoreboard
+
     }
 
     fun waitingScoreboard(player: Player) {
