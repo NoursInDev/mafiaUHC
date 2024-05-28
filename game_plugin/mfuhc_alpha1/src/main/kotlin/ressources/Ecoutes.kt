@@ -28,6 +28,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     fun arriveeJoueur(event: PlayerJoinEvent) {
         if (main.getPhase() == Phases.Configuration) {
             main.config.joueurs.add(Joueur(event.player as CraftPlayer))
+            main.scoreboards.waitingScoreboard(event.player)
             if (event.player.isOp) {
                 event.player.inventory.addItem(nouvelOpener())
             }
@@ -75,8 +76,6 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
 
         val item = event.currentItem
         val itemmeta = item.itemMeta
-
-        println(inv.name)
 
         // PROBLEM CHECK
 

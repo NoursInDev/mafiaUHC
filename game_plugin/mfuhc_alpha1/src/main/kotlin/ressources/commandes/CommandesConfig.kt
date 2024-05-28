@@ -47,6 +47,7 @@ class CommandesConfig(private val main: MafiaUHC) : CommandExecutor {
                                 }
 
                             }
+                            main.scoreboards.waitingScoreboard(main.server.getPlayer(args[1]))
                         }
                     }
 

@@ -34,6 +34,10 @@ class MafiaUHC : JavaPlugin() {
         val pm: PluginManager = server.pluginManager
         pm.registerEvents(Ecoutes(this), this)
 
+        for (player in server.onlinePlayers) {
+            scoreboards.waitingScoreboard(player)
+        }
+
         this.getCommand("mfc").executor = CommandesConfig(this)
         this.getCommand("mf").executor = CommandesIG(this)
         this.getCommand("mfd").executor = CommandesDev(this)
