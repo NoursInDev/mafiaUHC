@@ -23,19 +23,19 @@ class ScoreboardsGestionnaire(val main: MafiaUHC) {
 
         var count = 0
 
-        if (joueur.role?.vmult != 1F) {
+        if (joueur.role?.vmult != null) {
             val vitesse = objective.getScore("Vitesse: x${joueur.role?.dmult}")
             vitesse.score = count
             count++
         }
 
-        if (joueur.role?.rmult != 1F) {
+        if (joueur.role?.rmult != null) {
             val resi = objective.getScore("Resistance: x${joueur.role?.dmult}")
             resi.score = count
             count++
         }
 
-        if (joueur.role?.dmult != 1F) {
+        if (joueur.role?.dmult != null) {
             val degats = objective.getScore("Dégats: x${joueur.role?.dmult}")
             degats.score = count
             count++
