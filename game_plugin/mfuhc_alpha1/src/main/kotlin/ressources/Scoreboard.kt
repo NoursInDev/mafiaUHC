@@ -8,18 +8,20 @@ import org.noursindev.mafiauhc.MafiaUHC
 
 class ScoreboardsGestionnaire(val main: MafiaUHC) {
 
-    fun createGameScoreboard() {
-        for (joueur in main.config.joueurs) {
-            val manager: ScoreboardManager = Bukkit.getScoreboardManager()
-            val scoreboard = manager.newScoreboard
-            val objective = scoreboard.registerNewObjective("MafiaUHC", "dummy")
+    fun gameScoreboard(player: Player) {
+        val manager: ScoreboardManager = Bukkit.getScoreboardManager()
+        val scoreboard = manager.newScoreboard
+        val objective = scoreboard.registerNewObjective("§4Mafia§0§lUHC", "dummy")
 
-            objective.displaySlot = org.bukkit.scoreboard.DisplaySlot.SIDEBAR
-            val score = objective.getScore("§dMafia§l§0UHC")
-            score.score = 100
+        objective.displaySlot = org.bukkit.scoreboard.DisplaySlot.SIDEBAR
 
-            joueur.player.scoreboard = scoreboard as CraftScoreboard
-        }
+        val infos = objective.getScore("§6--- §4infos")
+        val en_vie = objective.getScore("En vie: ${main.config.joueurs.filter { it.vivant }.size}/${main.config.joueurs.size}")
+        val role = objective.getScore("Role: ${if (main.config.joueurs.find { it.player.name == player.name }!!.role != null) main.config.joueurs.find { it.player.name == player.name }!!.role!!.nom else "Non défini"}")
+        val pierres = objective.getScore("Pierres: ${if (main.config.joueurs.find { it.player.name == player.name }!!.boite != null) main.config.joueurs.find { it.player.name == player.name }!!.boite!!.pierres else 0}")
+        val effets = objective.getScore("§6--- §4effets")
+        
+
     }
 
     fun waitingScoreboard(player: Player) {

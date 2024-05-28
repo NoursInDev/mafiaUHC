@@ -120,7 +120,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             "chauffeur" -> {
                                 if (main.config.boite.chauffeurs > 0) {
                                     main.config.boite.chauffeurs--
-                                    joueur.role = Chauffeur(main, main.config.joueurs.filter { it.player != joueur.player }.random())
+                                    joueur.role = Chauffeur(main, main.config.joueurs.filter { it.player != joueur.player }.random(), joueur)
                                 } else {
                                     sender.sendMessage("Il n'y a plus de chauffeurs dans la boite")
                                 }
@@ -323,6 +323,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             }
                         }
                     }
+                    main.config.joueurs.find { it.player.name == main.config.parrain?.player?.name }?.role?.updateEffects()
                 }
 
                 "choix" -> {
@@ -334,7 +335,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                                 sender.sendMessage("Vous avez choisi la Pomme.")
                             }
                             "resi" -> {
-                                (joueur.role as Fidele).resistance++
+                                (joueur.role as Fidele).rmult += 0.02F
                                 sender.sendMessage("Vous avez choisi la Résistance.")
                             }
                         }

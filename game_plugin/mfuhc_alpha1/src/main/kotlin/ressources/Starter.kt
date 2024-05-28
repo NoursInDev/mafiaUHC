@@ -35,13 +35,15 @@ class Starter(private val main: MafiaUHC) : BukkitRunnable() {
                     it.player.sendMessage("Vous êtes le Parrain de cette partie.")
                     it.role = Parrain(main)
                     it.player.maxHealth = 26.0
-                    (it.role as Parrain).hasForce = Random.nextBoolean()
-                    if (!(it.role as Parrain).hasForce) {
-                        it.player.walkSpeed *= 1.1F
+                    val effect = Random.nextBoolean()
+                    if (!effect) {
+                        (it.role as Parrain).vmult += 0.1F
                         it.player.sendMessage("Vous avez vitesse.")
                     } else {
+                        (it.role as Parrain).dmult += 0.1F
                         it.player.sendMessage("Vous avez force.")
                     }
+                    main.config.parrain!!.role!!.updateEffects()
                 } else {
                     it.player.sendMessage("Le Parrain de cette partie est ${main.config.parrain?.player?.name}.")
                     it.player.maxHealth = 20.0

@@ -8,7 +8,9 @@ class Parrain(main : MafiaUHC):RoleSuper(main = main) {
     override val nom: String = "Parrain"
     override val description: String = "Vous êtes le Parrain de la mafia."
 
-    var hasForce = false
+    override fun updateEffects() {
+        rmult = 1F + (pierres/200)
+    }
 
     override fun roleShow(): String {
         return description

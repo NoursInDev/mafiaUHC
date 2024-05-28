@@ -11,7 +11,14 @@ abstract class RoleSuper(val main : MafiaUHC) {
     var pierres : Int = 0
     var vivant : Boolean = true
 
+    var declencheur = false
+
+    var dmult = 1F // multiplicateur de dégats
+    var rmult = 1F // multiplicateur de résistance
+    var vmult = 1F // multiplicateur de vitesse
+
     abstract fun roleShow() : String
+    open fun updateEffects() { }
 
     // effets roles
     // Parrain

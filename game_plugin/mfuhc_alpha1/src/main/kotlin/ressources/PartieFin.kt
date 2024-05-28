@@ -4,9 +4,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.noursindev.mafiauhc.MafiaUHC
-import org.noursindev.mafiauhc.ressources.roles.Parrain
-import org.noursindev.mafiauhc.ressources.roles.RoleSuper
-import org.noursindev.mafiauhc.ressources.roles.Voleur
+import org.noursindev.mafiauhc.ressources.roles.*
 
 fun checkFin(main: MafiaUHC, event: PlayerDeathEvent) {
     val joueur = main.config.joueurs.find { it.player == event.entity.player as CraftPlayer }
@@ -24,6 +22,7 @@ fun checkFin(main: MafiaUHC, event: PlayerDeathEvent) {
     }
     if (main.getPhase() == Phases.Finale) {
         var count = 0
+
         var finaliste : Joueur? = null
         for (j in main.config.joueurs) {
             if (joueur!!.player != j.player) {

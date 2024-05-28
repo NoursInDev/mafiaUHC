@@ -528,6 +528,9 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
     fun onPlayerDeath(event: PlayerDeathEvent) {
         val joueur = main.config.joueurs.find { it.player.name == event.entity.name }
         if (joueur != null) {
+            for (joueur in main.config.joueurs) {
+                joueur.role?.updateEffects()
+            }
             joueur.vivant = false
             if (joueur.role != null) {
                 val tueur = main.config.joueurs.find { it.player == event.entity.killer }
@@ -547,6 +550,7 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
                         main.config.parrain?.role?.pierres?.plus(joueur.role!!.pierres)!!
                 }
                 joueur.role!!.pierres = 0
+                checkFinal(main, event)
                 checkFin(main, event)
             }
         }
@@ -557,41 +561,11 @@ class Ecoutes(private val main: MafiaUHC) : Listener {
         val auteur = main.config.joueurs.find { it.player.name == event.damager.name }
         val prenant = main.config.joueurs.find { it.player.name == event.entity.name }
 
-        if (auteur != null) {
-            if (auteur.role is Parrain && (auteur.role as Parrain).hasForce) {
-                event.damage *= 1.1
-            }
-            if (auteur.role is Voleur && (auteur.role as Voleur).actif) {
-                event.damage *= 1 + (auteur.role!!.pierres / 100)
-                println("Voleur actif")
-            }
-            if (auteur.role is EnfantDesRues) {
-                if (auteur.role!!.pierres < 3) {
-                    event.damage *= 0.9
-                }
-                if (auteur.role!!.pierres >= 3) {
-                    event.damage *= 1 + ((auteur.role!!.pierres - 3) / 100)
-                }
-            }
-            if (auteur.role is Agent) {
-                event.damage *= 1.1
-            }
+        if (auteur?.role != null) {
+            event.damage *= auteur.role!!.dmult
         }
-        if (prenant != null) {
-            if (prenant.role is Parrain) {
-                event.damage *= 1 - (prenant.role!!.pierres / 200)
-            }
-            if (prenant.role is Chauffeur && sqrt(
-                    ((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(
-                        2
-                    ) + ((prenant.role as Chauffeur).ami.player.location.x - (prenant).player.location.x).pow(2)
-                ) < 50
-            ) {
-                event.damage *= 0.9
-            }
-            if ((prenant.role is Agent) && !(prenant.role as Agent).vulnerable) {
-                event.damage *= 0.9
-            }
+        if (prenant?.role != null) {
+            event.damage *= prenant.role!!.rmult
         }
     }
 }

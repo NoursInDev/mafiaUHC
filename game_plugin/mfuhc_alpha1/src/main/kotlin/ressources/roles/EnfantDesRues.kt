@@ -10,4 +10,16 @@ class EnfantDesRues(main : MafiaUHC):RoleSuper(main = main) {
         return description
     }
 
+    override fun updateEffects() {
+        if (pierres >= 3) {
+            dmult = 1F + (pierres/100) -3
+            if (pierres >= 5) {
+                vmult = 1F + ((pierres * 1.5F) /100) -5
+            }
+        } else {
+            dmult = 0.9F
+            vmult = 1F
+        }
+    }
+
 }

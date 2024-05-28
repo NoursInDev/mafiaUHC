@@ -11,6 +11,10 @@ class Voleur(main : MafiaUHC):RoleSuper(main = main) {
         return description
     }
 
+    override fun updateEffects() {
+        dmult = 1F + (pierres/100)
+    }
+
     override fun mfActivate() : Boolean {
         actif = !actif
         return true
