@@ -8,7 +8,7 @@ import org.noursindev.mafiauhc.MafiaUHC
 
 class ScoreboardsGestionnaire(val main: MafiaUHC) {
 
-    fun gameScoreboard(player: Player) {
+    fun gameScoreboard(joueur: Joueur) {
         val manager: ScoreboardManager = Bukkit.getScoreboardManager()
         val scoreboard = manager.newScoreboard
         val objective = scoreboard.registerNewObjective("§4Mafia§0§lUHC", "dummy")
@@ -17,10 +17,41 @@ class ScoreboardsGestionnaire(val main: MafiaUHC) {
 
         val infos = objective.getScore("§6--- §4infos")
         val en_vie = objective.getScore("En vie: ${main.config.joueurs.filter { it.vivant }.size}/${main.config.joueurs.size}")
-        val role = objective.getScore("Role: ${if (main.config.joueurs.find { it.player.name == player.name }!!.role != null) main.config.joueurs.find { it.player.name == player.name }!!.role!!.nom else "Non défini"}")
-        val pierres = objective.getScore("Pierres: ${if (main.config.joueurs.find { it.player.name == player.name }!!.boite != null) main.config.joueurs.find { it.player.name == player.name }!!.boite!!.pierres else 0}")
+        val role = objective.getScore("Role: ${if (joueur.role != null) joueur.role!!.nom else "Non défini"}")
+        val pierres = objective.getScore("Pierres: ${if (joueur.role != null) joueur.role!!.pierres else 0}")
         val effets = objective.getScore("§6--- §4effets")
-        
+
+        var count = 0
+
+        if (joueur.role?.vmult != 1F) {
+            val vitesse = objective.getScore("Vitesse: x${joueur.role?.dmult}")
+            vitesse.score = count
+            count++
+        }
+
+        if (joueur.role?.rmult != 1F) {
+            val resi = objective.getScore("Resistance: x${joueur.role?.dmult}")
+            resi.score = count
+            count++
+        }
+
+        if (joueur.role?.dmult != 1F) {
+            val degats = objective.getScore("Dégats: x${joueur.role?.dmult}")
+            degats.score = count
+            count++
+        }
+
+        val scoreObjects = listOf(
+            effets to "effets",
+            pierres to "pierres",
+            role to "role",
+            en_vie to "en_vie",
+            infos to "infos"
+        )
+
+        scoreObjects.forEachIndexed { index, pair ->
+            pair.first.score = index + count
+        }
 
     }
 

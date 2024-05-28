@@ -42,7 +42,7 @@ class CommandesDev(private val main : MafiaUHC) : CommandExecutor {
                             if (p3.size >= 4) {
                                 val ami = main.config.joueurs.find { it.player.name == p3[3] }
                                 if (ami != null) {
-                                    jcible.role = Chauffeur(main, ami)
+                                    jcible.role = Chauffeur(main, ami, jcible)
                                 }
                             }
                         }

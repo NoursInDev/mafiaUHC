@@ -337,6 +337,7 @@ class CommandesIG(private val main: MafiaUHC) : CommandExecutor {
                             "resi" -> {
                                 (joueur.role as Fidele).rmult += 0.02F
                                 sender.sendMessage("Vous avez choisi la Résistance.")
+                                joueur.role?.updateEffects()
                             }
                         }
                     }

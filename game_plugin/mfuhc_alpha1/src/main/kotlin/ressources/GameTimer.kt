@@ -1,11 +1,10 @@
 package org.noursindev.mafiauhc.ressources
 
-import net.md_5.bungee.api.ChatColor
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitRunnable
 import org.noursindev.mafiauhc.MafiaUHC
-import org.bukkit.Bukkit
 import org.noursindev.mafiauhc.ressources.roles.*
 
 class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
@@ -27,6 +26,13 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
                     main.config.bordure[3].toDouble(),
                     ((main.config.bordure[1] - main.config.bordure[0]) * 60).toLong()
                 )
+            }
+        }
+        for (joueur in main.config.joueurs) {
+            joueur.role?.updateEffects()
+            main.scoreboards.gameScoreboard(joueur)
+            if (joueur.role is EnfantDesRues) {
+                joueur.player.walkSpeed = 0.2F * joueur.role!!.vmult
             }
         }
         time++
@@ -63,7 +69,7 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
             main.config.parrain?.role?.pierres = main.config.parrain?.role?.pierres?.plus(main.config.boite.pierres)!!
         }
 
-        main.scoreboards.createGameScoreboard()
+
     }
 
     private fun roleAttribution(joueur: Joueur) {
@@ -73,7 +79,8 @@ class GameTimer(private val main: MafiaUHC) : BukkitRunnable() {
         if (main.config.boite.chauffeurs > 0) rolesDisponibles.add(
             Chauffeur(
                 main,
-                main.config.joueurs.filter { it.player != joueur.player }.random()
+                main.config.joueurs.filter { it.player != joueur.player }.random(),
+                joueur
             )
         )
         if (main.config.boite.nettoyeurs > 0) rolesDisponibles.add(Nettoyeur(main))
